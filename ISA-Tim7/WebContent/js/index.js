@@ -19,7 +19,7 @@ $(document).on('submit', '#form', function(e) {
 	   			sessionStorage.password = data.password;
 	   			sessionStorage.type = data.type;
 	   			
-	   			alert("login prosao")
+	   			window.location.href = "admin-main.html";
 	   		}
 	   		else {
 	   			alert("nema naloga")
