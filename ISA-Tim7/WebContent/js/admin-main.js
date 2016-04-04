@@ -1,6 +1,7 @@
 $( document ).ready(function() {
     
 	loadCities();
+	loadRestaurants();
 });
 
 function loadCities() {
@@ -101,10 +102,10 @@ function loadRestaurants() {
 	   			
 			   	$.each(list, function(index, obj) {	   		
 			   			
-			   		$('#resCity')
+			   		$('#manRest')
 			   		.append($("<option></option>")
 			   		.attr("value", index)
-			   		.text(obj.zip + " " + obj.name)); 
+			   		.text(obj.id + " " + obj.name)); 
 		   		});
 		   
 		   	}
@@ -115,4 +116,30 @@ function loadRestaurants() {
 	    			
 	});
 	
+};
+
+
+function addManager() {
+	
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/user/addManager",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"email"	: $("#manEmail").val(),
+			"name" : $("#manFName").val(),
+			"lName" : $("#manLName").val(),
+			"pass" : $("#manPass").val(),
+			"city" : $( "#manRest option:selected" ).text()
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+	   	success : function(data) {
+	   		alert("added");
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERROR");
+	    }
+	    			
+	});	
 };

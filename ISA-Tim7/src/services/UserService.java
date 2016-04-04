@@ -30,4 +30,17 @@ public class UserService {
 				(String)data.get("password"));
 	}
 	
+	
+	@POST
+	@Path("/addManager")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addManager(JSONObject data) {
+
+		String restId = (((String) data.get("city")).split(" ")[0]);
+		System.out.println(restId);
+		UserDAO.addManager((String)data.get("email"), (String)data.get("name"), (String)data.get("lName"), (String)data.get("pass"), restId);
+	}
+	
+	
 }
