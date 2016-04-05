@@ -26,7 +26,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public User login(JSONObject data) {
-		System.out.println("aloooooo alooooooo");
+		
 		return UserDAO.login((String)data.get("email"), 
 				(String)data.get("password"));
 	}
