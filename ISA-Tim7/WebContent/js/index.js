@@ -12,14 +12,39 @@ $(document).on('submit', '#form', function(e) {
 		dataType : "json",
 	   	success : function(data) {
 	   		if(data != null) {
-	   			
 	   			sessionStorage.email = data.email;
 	   			sessionStorage.firstName = data.firstName;
 	   			sessionStorage.lastName = data.lastName;
 	   			sessionStorage.password = data.password;
-	   			sessionStorage.type = data.type;
+	   			sessionStorage.userType = data.type;
+	   			sessionStorage.restaurantId = data.restaurantId;
+	   			sessionStorage.employeeType = data.employeeType;	  
 	   			
-	   			window.location.href = "admin-main.html";
+	   			if(sessionStorage.userType == "SYS_MANAGER") {
+	   				window.location.href = "admin-main.html";
+	   			}
+	   			else if(sessionStorage.userType == "R_MANAGER") {
+	   				//ovde napisi ti, mikice
+	   			}
+	   			else if(sessionStorage.userType == "EMPLOYEE") {
+	   				
+	   				if(sessionStorage.employeeType == "COOK") {
+	   					
+	   				}
+	   				else if(sessionStorage.employeeType == "BARTENDER") {
+	   					
+	   				}
+	   				else if(sessionStorage.employeeType == "WAITER") {
+		
+	   				}
+	   			}
+	   			else if(sessionStorage.userType == "GUEST") {
+	   				
+	   			}
+	   			else if(sessionStorage.userType == "SUPPLIER") {
+	   				
+	   			}
+	   			
 	   		}
 	   		else {
 	   			alert("nema naloga")

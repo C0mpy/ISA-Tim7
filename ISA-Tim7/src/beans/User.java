@@ -4,7 +4,7 @@ enum Type {
     EMPLOYEE, R_MANAGER, SYS_MANAGER, GUEST, SUPPLIER
 }
 
-public class User {
+public abstract class User {
 	
 	String email;
 	String firstName;
@@ -13,7 +13,6 @@ public class User {
 	Type type;
 	
 	public User(String email, String firstName, String lastName, String password, String type) {
-		super();
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
