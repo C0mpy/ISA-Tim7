@@ -11,7 +11,9 @@ $(document).on('submit', '#form', function(e) {
 	   	contentType : 'application/json',
 		dataType : "json",
 	   	success : function(data) {
+	   		alert(data);
 	   		if(data != null) {
+	   			alert(data);
 	   			sessionStorage.email = data.email;
 	   			sessionStorage.firstName = data.firstName;
 	   			sessionStorage.lastName = data.lastName;
@@ -20,11 +22,12 @@ $(document).on('submit', '#form', function(e) {
 	   			sessionStorage.restaurantId = data.restaurantId;
 	   			sessionStorage.employeeType = data.employeeType;	  
 	   			
+	   			alert(data);
 	   			if(sessionStorage.userType == "SYS_MANAGER") {
 	   				window.location.href = "admin-main.html";
 	   			}
 	   			else if(sessionStorage.userType == "R_MANAGER") {
-	   				//ovde napisi ti, mikice
+	   				window.location.href = "r_manager-main.html";
 	   			}
 	   			else if(sessionStorage.userType == "EMPLOYEE") {
 	   				

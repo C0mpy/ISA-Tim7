@@ -7,6 +7,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/r_manager-main.js"></script>
+	<link href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
+	<script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script src="js/bootbox.min(1).js"></script>
 </head>
 <body>
 	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addEmplModal">Add Employee</button>
@@ -48,17 +51,115 @@
 	        				</select></td>
 	        		
 	        			</tr>
+	        			<tr>
+	        				<td><label for="empBirth">Birth Date:</label></td>
+	        				<td>
+	        				<div class="input-group date">
+            					<input type="text" id="empBirth" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        					</div>
+
+							<script>
+   								$('.input-group.date').datepicker({
+        						format: "yyyy/mm/dd",
+        						startDate: "1940-01-01",
+        						todayBtn: "linked",
+        						autoclose: true,
+        						todayHighlight: true
+    							});
+							</script>
+	        				</td>
+	        			</tr>
+	        			<tr>
+	        				<td><label for="empDrSize">Dress Size:</label></td>
+	        				<td>
+	        					<div class="btn-group" data-toggle="buttons" id="empDrSize">
+  								<label class="btn btn-primary active">
+    							<input type="radio" name="empDrSize" id="option1" value="XS" autocomplete="off" checked> XS
+ 								</label>
+  							
+  								<label class="btn btn-primary">
+    							<input type="radio" name="empDrSize" id="option2" value="S" autocomplete="off"> S
+ 								</label>
+ 								
+  								<label class="btn btn-primary">
+    							<input type="radio" name="empDrSize" id="option3" value="L" autocomplete="off"> L
+  								</label>
+  								
+  								<label class="btn btn-primary">
+    							<input type="radio" name="empDrSize" id="option4" value="XL" autocomplete="off"> XL
+  								</label>
+  								
+  								<label class="btn btn-primary">
+    							<input type="radio" name="empDrSize" id="option5" value="XXL" autocomplete="off"> XXL
+  								</label>
+								</div>
+							</td>
+	        			</tr>
+	        			
+	        			<tr>
+	        				<td><label for="empShSize">Shoe Size:</label></td>
+	        				<td>
+	        					<div class="btn-group" data-toggle="buttons" id="empShSize">
+  									<label class="btn btn-primary active">
+    									<input type="radio" name="empShSize" id="option1" value="36" autocomplete="off" checked> 36
+ 									</label>
+  							
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option2" value="37" autocomplete="off"> 37
+ 									</label>
+ 								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option3" value="38" autocomplete="off"> 38
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option4" value="39" autocomplete="off"> 39
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option5" value="40" autocomplete="off"> 40
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option6" value="41" autocomplete="off"> 41
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option7" value="42" autocomplete="off"> 42
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option8" value="43" autocomplete="off"> 43
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option9" value="44" autocomplete="off"> 44
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option10" value="45" autocomplete="off"> 45
+  									</label>
+  								
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empShSize" id="option11" value="46" autocomplete="off"> 46
+  									</label>
+  								
+								</div>
+							</td>
+	        			</tr>
 	        			
 	        		</table>
+	        		<font color="red" id="empError"></font> 
+	        		
 	      		</div>
 		      	<div class="modal-footer">
-		      		<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addEmployee()">Add</button>
+		      		<button type="button" class="btn btn-primary" onclick="addEmployee()">Add</button>
 		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		      	</div>
 	   	 	</div>
 		</div>
 	</div>
 	
-
+	
 </body>
 </html>

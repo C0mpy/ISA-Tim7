@@ -120,4 +120,29 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public static boolean emailExists(String email) {
+		boolean response=false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			PreparedStatement ps = connect.prepareStatement("select * from USER where EMAIL=?");
+			ps.setString(1, email);
+			ResultSet result = ps.executeQuery();
+			if(result.next())
+				response = true;
+			else
+				response = false;
+			
+			result.close();
+			ps.close();
+			connect.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return response;
+	}
 }

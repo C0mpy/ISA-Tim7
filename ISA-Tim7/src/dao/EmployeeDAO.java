@@ -15,7 +15,8 @@ public class EmployeeDAO {
 	 * @param type
 	 */
 	public static void add(String f_name, String l_name, 
-			String email, String pass, String type){
+			String email, String pass, String type, Integer id_res,
+			String birth, String dress, String shoe){
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -29,41 +30,25 @@ public class EmployeeDAO {
 			ps.executeUpdate();
 			ps.close();
 			
-			PreparedStatement ps2 = connect.prepareStatement("insert into EMPLOYEE (USER_EMAIL, EMP_TYPE, RESTAURANT_ID_RES) values(?, ?, ?)");
+			PreparedStatement ps2 = connect.prepareStatement("insert into EMPLOYEE (USER_EMAIL, EMP_TYPE, RESTAURANT_ID_RES, DATE_OF_BIRTH, DRESS_SIZE, SHOE_SIZE) values(?, ?, ?, ?, ?, ?)");
+			
 			ps2.setString(1, email);
 			ps2.setString(2, type);
-			//ps2.setString(3, email); id restorana
+			ps2.setString(3, String.valueOf(id_res));
+			ps2.setString(4, birth);
+			ps2.setString(5, dress);
+			ps2.setString(6, shoe);
+			ps2.executeUpdate();
+			ps2.close();
 			
 			connect.close();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
 
-	public static boolean emailExists(String email) {
-		boolean response=false;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
-			PreparedStatement ps = connect.prepareStatement("select * from USER where EMAIL=?");
-			ps.setString(1, email);
-			ResultSet result = ps.executeQuery();
-			if(result.next())
-				response = true;
-			else
-				response = false;
-			
-			result.close();
-			ps.close();
-			connect.close();
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return response;
-	}
+	
 }
