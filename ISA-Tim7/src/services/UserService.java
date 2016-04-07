@@ -3,7 +3,6 @@ package services;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -32,6 +31,13 @@ public class UserService {
 				(String)data.get("password"));
 	}
 	
+	@POST
+	@Path("/addGuest")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addGuest(JSONObject data){
+		UserDAO.addGuest((String)data.get("email"), (String)data.get("fname"), (String)data.get("lname"), (String)data.get("pwd"));
+	}
 	
 	@POST
 	@Path("/addManager")
@@ -43,7 +49,7 @@ public class UserService {
 		UserDAO.addManager((String)data.get("email"), (String)data.get("name"), (String)data.get("lName"), (String)data.get("pass"), restId);
 	}
 	
-	@GET
+	@POST
 	@Path("/check")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)

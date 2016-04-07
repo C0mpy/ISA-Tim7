@@ -14,18 +14,18 @@ $(document).on('submit', '#register_form', function(e) {
 	}else{
 	
 	$.ajax ({
-	   	url : "../ISA-Tim7/rest/user/register",
+	   	url : "../ISA-Tim7/rest/user/addGuest",
 	   	type : "Post",
 	   	data : JSON.stringify({
 			"email" : $("#email").val(),
-			"password" : $("#pwd").val(),
+			"pwd" : $("#pwd").val(),
 			"fname"	: $("#firstname").val(),
 			"lname"	: $("#lastname").val()
 		}),
 	   	contentType : 'application/json',
 		dataType : "json",
 	   	success : function(data) {
-	   	
+	   		alert("korisnik registrovan");
 	   	},
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	alert("AJAX ERRORcina");
@@ -43,8 +43,10 @@ $("#email").keyup(function(){
 	
 		$.ajax({
 			url:"../ISA-Tim7/rest/user/check",
-			type:"get",
-			dataType:"text",
+			type:"post",
+			data: email,
+			contentType:"text/plain",
+			dataType: "text",
 			success:function(data){
 				
 				if(data=="false"){

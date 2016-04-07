@@ -120,6 +120,33 @@ public class UserDAO {
 		}
 	}
 	
+public static void addGuest(String email, String name, String lName, String pass) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			PreparedStatement ps = connect.prepareStatement("insert into USER (EMAIL, F_NAME, L_NAME, PASS, TYPE) values(?, ?, ?, ?, ?)");
+			ps.setString(1, email);
+			ps.setString(2, name);
+			ps.setString(3, lName);
+			ps.setString(4, pass);
+			ps.setString(5, "GUEST");
+			ps.executeUpdate();
+			ps.close();
+			
+			PreparedStatement ps1 = connect.prepareStatement("insert into GUEST (USER_EMAIL, ACTIVATED) values(?, 0)");
+			ps1.setString(1, email);
+			
+			ps1.executeUpdate();
+			ps1.close();
+			connect.close();
+			
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		}
+	}
+	
 	public static boolean emailExists(String email) {
 		boolean response=false;
 		try {
