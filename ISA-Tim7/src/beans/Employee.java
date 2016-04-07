@@ -16,11 +16,21 @@ public abstract class Employee extends User {
 	}
 
 	public String getEmployeeType() {
-		return this.type.name();
+		return this.employeeType.name();
 	}
 
 	public void setEmployeeType(String type) {
 		this.employeeType = EmployeeType.valueOf(type);
 	}
+
+	public String getRestaurantId() {
+		return restaurantId;
+	}
+
+	public void setRestaurantId(String restaurantId) {
+		this.restaurantId = restaurantId;
+	}
+	
+	
 	
 }

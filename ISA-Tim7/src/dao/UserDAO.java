@@ -41,7 +41,6 @@ public class UserDAO {
 			PreparedStatement ps1 = null;
 			ResultSet result1 = null;
 			
-			
 			if(type.equals("R_MANAGER")) { 
 				ps1 = connect.prepareStatement("select RESTAURANT_ID_RES from R_MANAGER where USER_EMAIL=?");
 				ps1.setString(1, email);
@@ -63,8 +62,8 @@ public class UserDAO {
 				ps1.setString(1, email);
 				result1 = ps1.executeQuery();
 				result1.next();
-				String restId = result1.getString(1);
-				String empType = result1.getString(2);
+				String empType = result1.getString(1);
+				String restId = result1.getString(2);
 				
 				if(empType.equals("COOK")) {
 					user = new Cook(email, fName, lName, password, type, empType, restId);
@@ -78,10 +77,10 @@ public class UserDAO {
 			}
 			
 			result.close();
-			if(result1 != null)
-				result1.close();
 			ps.close();
 			if(result1 != null)
+				result1.close();
+			if(ps1 != null)
 				ps1.close();
 			connect.close(); 
 			return user;

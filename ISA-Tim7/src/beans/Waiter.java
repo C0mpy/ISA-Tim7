@@ -8,4 +8,13 @@ public class Waiter extends Employee {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "Waiter [employeeType=" + employeeType + ", restaurantId=" + restaurantId + ", email=" + email
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password + ", type=" + type
+				+ "]";
+	}
+	
+	
+
 }

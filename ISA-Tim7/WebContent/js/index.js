@@ -11,18 +11,15 @@ $(document).on('submit', '#form', function(e) {
 	   	contentType : 'application/json',
 		dataType : "json",
 	   	success : function(data) {
-	   		alert(data);
+	   		
 	   		if(data != null) {
-	   			alert(data);
-	   			sessionStorage.email = data.email;
+
 	   			sessionStorage.firstName = data.firstName;
 	   			sessionStorage.lastName = data.lastName;
 	   			sessionStorage.password = data.password;
 	   			sessionStorage.userType = data.type;
 	   			sessionStorage.restaurantId = data.restaurantId;
-	   			sessionStorage.employeeType = data.employeeType;	  
-	   			
-	   			alert(data);
+	   			sessionStorage.employeeType = data.employeeType;  
 	   			if(sessionStorage.userType == "SYS_MANAGER") {
 	   				window.location.href = "admin-main.html";
 	   			}
@@ -30,7 +27,6 @@ $(document).on('submit', '#form', function(e) {
 	   				window.location.href = "r_manager-main.html";
 	   			}
 	   			else if(sessionStorage.userType == "EMPLOYEE") {
-	   				
 	   				if(sessionStorage.employeeType == "COOK") {
 	   					
 	   				}
@@ -38,7 +34,7 @@ $(document).on('submit', '#form', function(e) {
 	   					
 	   				}
 	   				else if(sessionStorage.employeeType == "WAITER") {
-		
+	   					window.location.href = "waiter.html";
 	   				}
 	   			}
 	   			else if(sessionStorage.userType == "GUEST") {
