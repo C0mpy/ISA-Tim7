@@ -74,7 +74,7 @@ function addRestaurant() {
 	   	contentType : 'application/json',
 		dataType : "json",
 	   	success : function(data) {
-	   		alert("added");
+	   		loadRestaurants();
 	   	},
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	alert("AJAX ERROR");
@@ -120,7 +120,6 @@ function loadRestaurants() {
 
 
 function addManager() {
-	
 	
 	$.ajax ({
 	   	url : "../ISA-Tim7/rest/user/addManager",

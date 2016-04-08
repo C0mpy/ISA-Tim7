@@ -17,9 +17,7 @@ $(document).on('submit', '#form', function(e) {
 	   			sessionStorage.firstName = data.firstName;
 	   			sessionStorage.lastName = data.lastName;
 	   			sessionStorage.password = data.password;
-	   			sessionStorage.userType = data.type;
-	   			sessionStorage.restaurantId = data.restaurantId;
-	   			sessionStorage.employeeType = data.employeeType;  
+	   			sessionStorage.userType = data.type;  
 	   			if(sessionStorage.userType == "SYS_MANAGER") {
 	   				window.location.href = "admin-main.html";
 	   			}
@@ -27,6 +25,13 @@ $(document).on('submit', '#form', function(e) {
 	   				window.location.href = "r_manager-main.html";
 	   			}
 	   			else if(sessionStorage.userType == "EMPLOYEE") {
+	   				
+	   				sessionStorage.restaurantId = data.restaurantId;
+		   			sessionStorage.employeeType = data.employeeType;
+		   			sessionStorage.dateOfBirth = data.birth;
+		   			sessionStorage.dressSize = data.dress;
+		   			sessionStorage.shoeSize = data.shoe;
+	   				
 	   				if(sessionStorage.employeeType == "COOK") {
 	   					
 	   				}
