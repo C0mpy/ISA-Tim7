@@ -10,14 +10,80 @@
 	<link href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
 	<script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 	<script src="js/bootbox.min(1).js"></script>
+	
+	<style>
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {height: 1500px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    .voffset { margin-top: 10px; }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;} 
+    }
+  </style>
 </head>
 <body>
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addEmplModal">Add Employee</button>
+	
+	<div class="container-fluid">
+  	<div class="row content">
+	<div class="col-sm-3 sidenav" style="background:silver">
+      <h4>Restaurant Manager </h4>
+      <label></label>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#home" ><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a></li>
+        <li><a href="#employees" onclick = "getEmployees()" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Employees</a></li>
+        <li><a href="#restautant"><span class="glyphicon glyphicon-cutlery"></span>&nbsp;&nbsp;Restaurant</a></li>
+        <li><a href="#suppliers"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;&nbsp;Suppliers</a></li>
+        <li><a href="#report"><span class="glyphicon glyphicon-stats"></span>&nbsp;&nbsp;Report</a></li>
+      </ul><br>
+      
+    </div>
+    
+    <div class="col-sm-9 sidenav">
+    <div class="tab-content">
+	    <div class="tab-pane" id="employees"  >
+	    	<div class="container-fluid">
+	    		<div class="col-sm-9">
+      			<h4><small>EMPLOYEES</small></h4>
+      			<hr>
+  				<div class="row">
+    				<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#addEmplModal">Add Employee</button>
+  				</div>
+  				<hr>
+  				<div class="row"><table class="table" id="empTable"></table></div>
+			</div>
+	      	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	<footer class="container-fluid">
+  		<p>Footer Text</p>
+	</footer>
 	
 	<!-- Modal -->
 	<div id="addEmplModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
-	
 	    	<!-- Modal content-->
 	    	<div class="modal-content">
 	      		<div class="modal-header">
@@ -48,50 +114,50 @@
 	        					<option>Waiter</option>
 	        					<option>Bartender</option>
 	        					<option>Cook</option>
-	        				</select></td>
-	        		
+	        					</select>
+	        				</td>
 	        			</tr>
 	        			<tr>
 	        				<td><label for="empBirth">Birth Date:</label></td>
 	        				<td>
-	        				<div class="input-group date">
-            					<input type="text" id="empBirth" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-        					</div>
+	        					<div class="input-group date">
+            						<input type="text" id="empBirth" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        						</div>
 
-							<script>
-   								$('.input-group.date').datepicker({
-        						format: "yyyy/mm/dd",
-        						startDate: "1940-01-01",
-        						todayBtn: "linked",
-        						autoclose: true,
-        						todayHighlight: true
-    							});
-							</script>
+								<script>
+   									$('.input-group.date').datepicker({
+        							format: "yyyy/mm/dd",
+        							startDate: "1940-01-01",
+        							todayBtn: "linked",
+        							autoclose: true,
+        							todayHighlight: true
+    								});
+								</script>
 	        				</td>
 	        			</tr>
 	        			<tr>
 	        				<td><label for="empDrSize">Dress Size:</label></td>
 	        				<td>
 	        					<div class="btn-group" data-toggle="buttons" id="empDrSize">
-  								<label class="btn btn-primary active">
-    							<input type="radio" name="empDrSize" id="option1" value="XS" autocomplete="off" checked> XS
- 								</label>
+  									<label class="btn btn-primary active">
+    									<input type="radio" name="empDrSize" id="option1" value="XS" autocomplete="off" checked> XS
+ 									</label>
   							
-  								<label class="btn btn-primary">
-    							<input type="radio" name="empDrSize" id="option2" value="S" autocomplete="off"> S
- 								</label>
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empDrSize" id="option2" value="S" autocomplete="off"> S
+ 									</label>
  								
-  								<label class="btn btn-primary">
-    							<input type="radio" name="empDrSize" id="option3" value="L" autocomplete="off"> L
-  								</label>
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empDrSize" id="option3" value="L" autocomplete="off"> L
+  									</label>
   								
-  								<label class="btn btn-primary">
-    							<input type="radio" name="empDrSize" id="option4" value="XL" autocomplete="off"> XL
-  								</label>
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empDrSize" id="option4" value="XL" autocomplete="off"> XL
+  									</label>
   								
-  								<label class="btn btn-primary">
-    							<input type="radio" name="empDrSize" id="option5" value="XXL" autocomplete="off"> XXL
-  								</label>
+  									<label class="btn btn-primary">
+    									<input type="radio" name="empDrSize" id="option5" value="XXL" autocomplete="off"> XXL
+  									</label>
 								</div>
 							</td>
 	        			</tr>

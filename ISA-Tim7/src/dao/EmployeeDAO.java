@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import beans.Employee;
 
 public class EmployeeDAO {
 
@@ -50,5 +53,35 @@ public class EmployeeDAO {
 		}
 	}
 
-	
+	public static ArrayList<Employee> getEmployees(String id){
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			PreparedStatement ps = connect.prepareStatement("select EMAIL,"
+					+ "F_NAME, L_NAME, PASS, EMP_TYPE, RESTAURANT_ID_RES, "
+					+ "DATE_OF_BIRTH, DRESS_SIZE, EMPLOYEE.SHOE_SIZE from USER inner join "
+					+ "EMPLOYEE on EMAIL=EMPLOYEE.USER_EMAIL where EMPLOYEE.RESTAURANT_ID_RES=?");
+			ps.setString(1, id);
+			
+			ResultSet result = ps.executeQuery();
+			ArrayList<Employee> employees = new ArrayList<Employee>();
+			while(result.next()){
+				employees.add(new Employee(result.getString(1),
+						result.getString(2),result.getString(3),
+						result.getString(4),"EMPLOYEE", result.getString(5),
+						result.getString(6), result.getString(7),
+						result.getString(8),result.getString(9)));
+			}
+			
+			result.close();
+			ps.close();
+			connect.close(); 
+			return employees;
+			
+		}catch(Exception e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

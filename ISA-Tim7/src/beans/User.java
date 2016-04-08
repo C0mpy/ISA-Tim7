@@ -10,14 +10,14 @@ public abstract class User {
 	String firstName;
 	String lastName;
 	String password;
-	Type type;
+	String type;
 	
 	public User(String email, String firstName, String lastName, String password, String type) {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
-		setType(type);
+		this.type = type;
 	}
 
 	public String getEmail() {
@@ -53,12 +53,10 @@ public abstract class User {
 	}
 
 	public String getType() {
-		return this.type.name();
+		return type;
 	}
 
-	public void setType(String type) {
-		this.type = Type.valueOf(type);
-	}
+	
 	
 	
 	

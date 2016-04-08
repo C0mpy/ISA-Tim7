@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.json.simple.JSONObject;
 
+import beans.Employee;
 import dao.EmployeeDAO;
 import dao.UserDAO;
 
@@ -53,6 +55,15 @@ public class EmployeeService {
 				, (String)data.get("shoe")
 				);
 		return "";
+	}
+	
+	@POST
+	@Path("/get")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Employee> get(JSONObject data){
+		return EmployeeDAO.getEmployees((String)data.get("id_res"));
+		
 	}
 
 	public static final Pattern VALID_DATE_BIRTH_REGEX = 
