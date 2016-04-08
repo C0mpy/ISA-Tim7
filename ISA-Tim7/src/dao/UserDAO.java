@@ -41,7 +41,6 @@ public class UserDAO {
 			PreparedStatement ps1 = null;
 			ResultSet result1 = null;
 			
-			
 			if(type.equals("R_MANAGER")) { 
 				ps1 = connect.prepareStatement("select RESTAURANT_ID_RES from R_MANAGER where USER_EMAIL=?");
 				ps1.setString(1, email);
@@ -63,9 +62,10 @@ public class UserDAO {
 				ps1.setString(1, email);
 				result1 = ps1.executeQuery();
 				result1.next();
-				String restId = result1.getString(1);
-				String empType = result1.getString(2);
+				String empType = result1.getString(1);
+				String restId = result1.getString(2);
 				
+				/*
 				if(empType.equals("COOK")) {
 					user = new Cook(email, fName, lName, password, type, empType, restId);
 				}
@@ -74,14 +74,14 @@ public class UserDAO {
 				}
 				else if(empType.equals("BARTENDER")) {	
 					user = new Bartender(email, fName, lName, password, type, empType, restId);
-				}
+				}*/
 			}
 			
 			result.close();
-			if(result1 != null)
-				result1.close();
 			ps.close();
 			if(result1 != null)
+				result1.close();
+			if(ps1 != null)
 				ps1.close();
 			connect.close(); 
 			return user;
@@ -117,6 +117,33 @@ public class UserDAO {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+public static void addGuest(String email, String name, String lName, String pass) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			PreparedStatement ps = connect.prepareStatement("insert into USER (EMAIL, F_NAME, L_NAME, PASS, TYPE) values(?, ?, ?, ?, ?)");
+			ps.setString(1, email);
+			ps.setString(2, name);
+			ps.setString(3, lName);
+			ps.setString(4, pass);
+			ps.setString(5, "GUEST");
+			ps.executeUpdate();
+			ps.close();
+			
+			PreparedStatement ps1 = connect.prepareStatement("insert into GUEST (USER_EMAIL, ACTIVATED) values(?, 0)");
+			ps1.setString(1, email);
+			
+			ps1.executeUpdate();
+			ps1.close();
+			connect.close();
+			
+		} catch (Exception e) {
+		
 			e.printStackTrace();
 		}
 	}
