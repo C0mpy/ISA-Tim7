@@ -25,6 +25,8 @@ $(document).on('submit', '#register_form', function(e) {
 	   	contentType : 'application/json',
 		dataType : "json",
 	   	success : function(data) {
+	   		
+	   		
 	   		alert("korisnik registrovan");
 	   	},
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {

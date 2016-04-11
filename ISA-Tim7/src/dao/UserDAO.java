@@ -58,23 +58,26 @@ public class UserDAO {
 				user = new Guest(email, fName, lName, password, type);
 			}
 			else if(type.equals("EMPLOYEE")) {
-				ps1 = connect.prepareStatement("select EMP_TYPE, RESTAURANT_ID_RES from EMPLOYEE where USER_EMAIL=?");
+				ps1 = connect.prepareStatement("select EMP_TYPE, RESTAURANT_ID_RES, DATE_OF_BIRTH, DRESS_SIZE, SHOE_SIZE from EMPLOYEE where USER_EMAIL=?");
 				ps1.setString(1, email);
 				result1 = ps1.executeQuery();
 				result1.next();
 				String empType = result1.getString(1);
 				String restId = result1.getString(2);
+				String birth = result1.getString(3);
+				String dress = result1.getString(4);
+				String shoe = result1.getString(5);
 				
-				/*
+				
 				if(empType.equals("COOK")) {
-					user = new Cook(email, fName, lName, password, type, empType, restId);
+					user = new Cook(email, fName, lName, password, type, empType, restId, birth, dress, shoe);
 				}
 				else if(empType.equals("WAITER")) {	
-					user = new Waiter(email, fName, lName, password, type, empType, restId);
+					user = new Waiter(email, fName, lName, password, type, empType, restId, birth, dress, shoe);
 				}
 				else if(empType.equals("BARTENDER")) {	
-					user = new Bartender(email, fName, lName, password, type, empType, restId);
-				}*/
+					user = new Bartender(email, fName, lName, password, type, empType, restId, birth, dress, shoe);
+				}
 			}
 			
 			result.close();
