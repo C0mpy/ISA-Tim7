@@ -15,7 +15,7 @@ public class RestaurantDAO {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("insert into RESTAURANT (NAME, DESCRIPTION, ADDRESS, CITY_ZIP) values(?, ?, ?, ?)");
 			ps.setString(1, name);
 			ps.setString(2, description);
@@ -36,7 +36,7 @@ public class RestaurantDAO {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("select * from RESTAURANT");
 			ResultSet result = ps.executeQuery();
 			ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();

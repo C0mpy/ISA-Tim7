@@ -22,7 +22,7 @@ public class UserDAO {
 			User user = null;
 
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("select F_NAME, L_NAME, TYPE USER from USER where EMAIL =? and PASS =?");
 			ps.setString(1, email);
 			ps.setString(2, password);
@@ -98,7 +98,7 @@ public class UserDAO {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("insert into USER (EMAIL, F_NAME, L_NAME, PASS, TYPE) values(?, ?, ?, ?, ?)");
 			ps.setString(1, email);
 			ps.setString(2, name);
@@ -125,7 +125,7 @@ public static void addGuest(String email, String name, String lName, String pass
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("insert into USER (EMAIL, F_NAME, L_NAME, PASS, TYPE) values(?, ?, ?, ?, ?)");
 			ps.setString(1, email);
 			ps.setString(2, name);
@@ -152,7 +152,7 @@ public static void addGuest(String email, String name, String lName, String pass
 		boolean response=false;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("select * from USER where EMAIL=?");
 			ps.setString(1, email);
 			ResultSet result = ps.executeQuery();

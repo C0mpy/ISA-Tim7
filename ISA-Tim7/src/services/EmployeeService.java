@@ -66,6 +66,16 @@ public class EmployeeService {
 		
 	}
 
+	@POST
+	@Path("/shifts")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addShift(JSONObject data){
+		EmployeeDAO.addShift((String)data.get("email"),
+				(String)data.get("date"),(String)data.get("time"));
+		
+	}
+	
 	public static final Pattern VALID_DATE_BIRTH_REGEX = 
 		Pattern.compile("\\d{4}/\\d{2}/\\d{2}");
 	

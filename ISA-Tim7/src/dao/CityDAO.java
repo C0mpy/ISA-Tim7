@@ -14,7 +14,7 @@ public class CityDAO {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("select * from CITY");
 			ResultSet result = ps.executeQuery();
 			ArrayList<City> cities = new ArrayList<City>();
@@ -37,7 +37,7 @@ public class CityDAO {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("insert into CITY (ZIP, NAME) values(?, ?)");
 			ps.setString(1, zip);
 			ps.setString(2, name);

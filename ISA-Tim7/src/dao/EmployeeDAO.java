@@ -23,7 +23,7 @@ public class EmployeeDAO {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("insert into USER (F_NAME, L_NAME, EMAIL, PASS, TYPE) values(?, ?, ?, ?, ?)");
 			ps.setString(1, f_name);
 			ps.setString(2, l_name);
@@ -56,7 +56,7 @@ public class EmployeeDAO {
 	public static ArrayList<Employee> getEmployees(String id){
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection connect = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7113594?useSSL=false", "sql7113594", "TKeTKUdEXj");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("select EMAIL,"
 					+ "F_NAME, L_NAME, PASS, EMP_TYPE, RESTAURANT_ID_RES, "
 					+ "DATE_OF_BIRTH, DRESS_SIZE, EMPLOYEE.SHOE_SIZE from USER inner join "
@@ -83,5 +83,24 @@ public class EmployeeDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void addShift(String email, String date, String time) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("insert into SHIFT (EMPLOYEE_USER_EMAIL, DATE, TIME) values(?, ?, ?)");
+			ps.setString(1, email);
+			ps.setString(2, date);
+			ps.setString(3, time);
+			ps.executeUpdate();
+			ps.close();
+			connect.close(); 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="ISO-8859-1">
+	<meta charset='utf-8' />
 	<title>Restaurant Manager</title>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -11,7 +11,16 @@
 	<script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 	<script src="js/bootbox.min(1).js"></script>
 	
+	<link rel='stylesheet' href='fullcalendar-2.6.1/lib/hot-sneaks/jquery-ui.min.css' />
+	<link href='fullcalendar-2.6.1/fullcalendar.css' rel='stylesheet' />
+	<link href='fullcalendar-2.6.1/fullcalendar.print.css' rel='stylesheet' media='print' />
+	<script src='fullcalendar-2.6.1/lib/moment.min.js'></script>
+	<script src='fullcalendar-2.6.1/lib/jquery.min.js'></script>
+	<script src='fullcalendar-2.6.1/lib/jquery-ui.custom.min.js'></script>
+	<script src='fullcalendar-2.6.1/fullcalendar.min.js'></script>
+	
 	<style>
+
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
     .row.content {height: 1500px}
     
@@ -38,11 +47,85 @@
       }
       .row.content {height: auto;} 
     }
+    
+    body.modal-open{
+    	width:100%!important;
+    	height:100%!important;
+    	padding-right:0!important;
+    	overflow-y:scroll!important;
+    	position:fixed!important;
+	}
+	
+	body {
+		margin-top: 0;
+		text-align: left;
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		
+	}
+    
+    hr { 
+		display: block;
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+		margin-left: auto;
+		margin-right: auto;
+		border-style: inset;
+		border-width: 1px;
+	} 
+	
+	#wrap {
+		width: 800px;
+		margin: 0 auto;
+	}
+		
+	#external-events {
+		float: left;
+		width: 150px;
+		padding: 0 10px;
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: left;
+	}
+		
+	#external-events h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+		
+	}
+		
+	#external-events .fc-event {
+		margin: 10px 0;
+		cursor: pointer;
+	}
+		
+	#external-events p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+	}
+		
+	#external-events p input {
+		margin: 0;
+		vertical-align: middle;
+	}
+
+	#calendar {
+		float: right;
+		width: 600px;
+	}
+	
+    div.image {
+   		background-image:url("res.jpg");
+   		height: 100%!important; width: 100%;
+	}​
+
   </style>
 </head>
 <body>
 	
-	<div class="container-fluid">
+	<div class="container-fluid " >
   	<div class="row content">
 	<div class="col-sm-3 sidenav" style="background:silver">
       <h4>Restaurant Manager </h4>
@@ -50,7 +133,7 @@
       <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#home" ><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a></li>
         <li><a href="#employees" onclick = "getEmployees()" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Employees</a></li>
-        <li><a href="#restautant"><span class="glyphicon glyphicon-cutlery"></span>&nbsp;&nbsp;Restaurant</a></li>
+        <li><a href="#restaurant" data-toggle="tab"><span class="glyphicon glyphicon-cutlery"></span>&nbsp;&nbsp;Restaurant</a></li>
         <li><a href="#suppliers"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;&nbsp;Suppliers</a></li>
         <li><a href="#report"><span class="glyphicon glyphicon-stats"></span>&nbsp;&nbsp;Report</a></li>
       </ul><br>
@@ -58,22 +141,42 @@
     </div>
     
     <div class="col-sm-9 sidenav">
-    <div class="tab-content">
-	    <div class="tab-pane" id="employees"  >
-	    	<div class="container-fluid">
-	    		<div class="col-sm-9">
-      			<h4><small>EMPLOYEES</small></h4>
-      			<hr>
-  				<div class="row">
-    				<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#addEmplModal">Add Employee</button>
-  				</div>
-  				<hr>
-  				<div class="row"><table class="table" id="empTable"></table></div>
+    	<div class="tab-content">
+	    	<div class="tab-pane " id="employees"  >
+	    		<div class="container-fluid">
+	    			<div class="col-lg-9">
+      					<h4><small>EMPLOYEES</small></h4>
+      					<hr>
+  						<div class="row">
+    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#addEmplModal">Add Employee</button>
+  						</div>
+  						<hr>
+  						<br><br>
+  						<div class="row"><table class="table" id="empTable"></table></div>
+					</div>
+	      		</div>
 			</div>
-	      	</div>
+			
+			<div class="tab-pane" id="restaurant"  >
+	    		<div class="container-fluid">
+	    			<div class="col-sm-9">
+      					<h4><small>RESTAURANT</small></h4>
+      					<hr>
+  						<div class="row">
+    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyName">Modify Name</button>
+  							
+  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyDesc">Modify Description</button>
+  						</div>
+  						<hr>
+  						
+					</div>
+	      		</div>
 	</div>
+			
+			
+		</div>
 	</div>
-	</div>
+			
 	</div>
 	</div>
 	
@@ -226,6 +329,49 @@
 		</div>
 	</div>
 	
+	<div id="addSchedule" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Add Schedule</h4>
+	      		</div>
+	      		<div class="modal-body" id="mb">
+	      			
+	      		</div>
+	     	</div>
+		</div>
+	</div>
+	
+	<div id='wrap' >
+		<div id='external-events'>
+			<h4>Shifts</h4>
+			<hr>
+			<div class="form-group">
+				<label for="st">Start Time:</label>
+				<input type="text" class="form-control" id="st">
+			</div>
+
+			<div class="form-group">
+				<label for="en">End Time:</label>
+				<input type="text" class="form-control" id="en">
+			</div>
+			
+			<button type="button" class="btn btn-info btn-sm" onclick="addShift()">Add Shift</button>
+			<p>
+				<input type='checkbox' id='drop-remove' />
+				<label for='drop-remove'>remove after drop</label>
+			</p>
+		</div>
+		
+		<div id='calendar'></div>
+		<div style='clear:both'></div>
+		<div class="modal-footer">
+		   	<button type="button" class="btn btn-primary" onclick="saveShifts()">Save</button>
+		   	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	</div>
 	
 </body>
 </html>
