@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import org.json.simple.JSONObject;
 
 import beans.Employee;
+import beans.Shift;
 import dao.EmployeeDAO;
 import dao.UserDAO;
 
@@ -104,6 +105,15 @@ public class EmployeeService {
 		else if(((String)data.get("birth")).equals(""))
 			return false;
 		return true;
+	}
+	
+	@POST
+	@Path("/getShifts")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Shift> getShifts(JSONObject data){
+		return EmployeeDAO.getShifts((String)data.get("email"));
+		
 	}
 	
 }

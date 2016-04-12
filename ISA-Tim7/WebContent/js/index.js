@@ -13,7 +13,8 @@ $(document).on('submit', '#form', function(e) {
 	   	success : function(data) {
 	   		
 	   		if(data != null) {
-
+	   			
+	   			sessionStorage.email = data.email;
 	   			sessionStorage.firstName = data.firstName;
 	   			sessionStorage.lastName = data.lastName;
 	   			sessionStorage.password = data.password;
@@ -22,6 +23,7 @@ $(document).on('submit', '#form', function(e) {
 	   				window.location.href = "admin-main.html";
 	   			}
 	   			else if(sessionStorage.userType == "R_MANAGER") {
+	   				sessionStorage.restaurantId = data.restaurantId;
 	   				window.location.href = "r_manager-main.html";
 	   			}
 	   			else if(sessionStorage.userType == "EMPLOYEE") {

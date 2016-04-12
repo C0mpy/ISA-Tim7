@@ -1,21 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+	
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
+	
+	<link rel='stylesheet' href='fullcalendar-2.6.1/fullcalendar.css' />
+	<script src='fullcalendar-2.6.1/lib/moment.min.js'></script>
+	<script src='fullcalendar-2.6.1/fullcalendar.js'></script>
+	
+	<script type="text/javascript" src="js/waiter.js"></script>
+	<link rel="stylesheet" href="css/waiter.css">
 </head>
 <body>
-
-	<div id="restaurant-graphics"></div>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/bonsai/0.4/bonsai.min.js"></script>
 	
-	<script>
-	  bonsai.run(document.getElementById("restaurant-graphics"), {
-	    url: "js/restaurant-graphics.js",
-	    width: 500,
-	    height: 400
-	  });
-	</script>
+	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#sections">Show Sections</button>
+
+	<!-- Modal -->
+	<div id="sections" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+	
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Sections</h4>
+	      		</div>
+	      		<div class="modal-body">
+	        		<div id="restaurant-graphics"></div>
+					<script src="http://cdnjs.cloudflare.com/ajax/libs/bonsai/0.4/bonsai.min.js"></script>
+					
+					<script>
+					  bonsai.run(document.getElementById("restaurant-graphics"), {
+					    url: "js/restaurant-graphics.js",
+					    width: 500,
+					    height: 400
+					  });
+					</script>
+	      		</div>
+		      	<div class="modal-footer">
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+	   	 	</div>
+		</div>
+	</div>
+	
+	
+	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#shifts">Show Shifts</button>
+
+	<!-- Modal -->
+	<div id="shifts" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+	
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Shifts</h4>
+	      		</div>
+	      		<div class="modal-body">
+	        		<div id='calendar'></div>
+	      		</div>
+		      	<div class="modal-footer">
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+	   	 	</div>
+		</div>
+	</div>
 	
 </body>
 </html>

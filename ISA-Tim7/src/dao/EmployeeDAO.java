@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import beans.Employee;
+import beans.Shift;
 
 public class EmployeeDAO {
 
@@ -102,5 +103,31 @@ public class EmployeeDAO {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static ArrayList<Shift> getShifts(String email){
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select * from SHIFT where EMPLOYEE_USER_EMAIL=?");
+			ps.setString(1, email);
+			
+			ResultSet result = ps.executeQuery();
+			ArrayList<Shift> shifts = new ArrayList<Shift>();
+			while(result.next()){
+				shifts.add(new Shift(result.getString(1),
+						result.getString(2),result.getString(3), email));
+			}
+			
+			result.close();
+			ps.close();
+			connect.close(); 
+			return shifts;
+			
+		}catch(Exception e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
