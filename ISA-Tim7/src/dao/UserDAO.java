@@ -55,7 +55,16 @@ public class UserDAO {
 				user = new Supplier(email, fName, lName, password, type);
 			}
 			else if(type.equals("GUEST")) {
-				user = new Guest(email, fName, lName, password, type);
+				
+				ps1=connect.prepareStatement("select GUEST.ACTIVATED from USER inner join GUEST"+
+											" on USER.EMAIL=GUEST.USER_EMAIL"+
+											" where USER.EMAIL=? ; ");
+				ps1.setString(1, email);
+				result1=ps1.executeQuery();
+				result1.next();
+				boolean activated=result1.getBoolean(1);
+				
+				user = new Guest(email, fName, lName, password, type,activated);
 			}
 			else if(type.equals("EMPLOYEE")) {
 				ps1 = connect.prepareStatement("select EMP_TYPE, RESTAURANT_ID_RES, DATE_OF_BIRTH, DRESS_SIZE, SHOE_SIZE from EMPLOYEE where USER_EMAIL=?");

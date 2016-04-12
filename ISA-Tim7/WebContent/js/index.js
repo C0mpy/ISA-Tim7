@@ -45,7 +45,8 @@ $(document).on('submit', '#form', function(e) {
 	   				}
 	   			}
 	   			else if(sessionStorage.userType == "GUEST") {
-	   				
+	   				sessionStorage.activated=data.activated;
+	   				window.location.href="guest.html"
 	   			}
 	   			else if(sessionStorage.userType == "SUPPLIER") {
 	   				
