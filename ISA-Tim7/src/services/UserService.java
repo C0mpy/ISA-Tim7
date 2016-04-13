@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Properties;
+import java.util.Random;
 
 import javax.inject.Singleton;
 import javax.mail.Message;
@@ -45,6 +46,51 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addGuest(JSONObject data){
+		String token=generateToken();
+		sendActivationToken((String)data.get("email"),token);
+		UserDAO.addGuest((String)data.get("email"), (String)data.get("fname"), 
+				(String)data.get("lname"), (String)data.get("pwd"),token);
+	}
+	
+	@POST
+	@Path("/addManager")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addManager(JSONObject data) {
+
+		String restId = (((String) data.get("city")).split(" ")[0]);
+		UserDAO.addManager((String)data.get("email"), (String)data.get("name"), (String)data.get("lName"), (String)data.get("pass"), restId);
+	}
+	
+	@POST
+	@Path("/check")
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN)
+	public boolean checkEmail(String email){
+		
+		return UserDAO.emailExists(email);
+		
+	}
+	
+	@POST
+	@Path("/resend")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void resend(String email){
+		String token = generateToken();
+		sendActivationToken( email, token);
+		UserDAO.setNewToken( email, token);
+	}
+	@POST
+	@Path("/activate_acc")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public boolean checkEmail(JSONObject data){
+		
+		return UserDAO.activate_acc((String) data.get("email"),(String) data.get("token"));
+		
+	}
+	
+	private void sendActivationToken(String email,String token){
 		final String username = "odjebigaguglu@gmail.com";
 		final String password = "kuracbakin123 ";
 
@@ -66,9 +112,9 @@ public class UserService {
  			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("nebitno@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse((String)data.get("email")));
+				InternetAddress.parse(email));
 			message.setSubject("Activating account");
-			message.setText("<a href='127.0.0.1:8080/ISA-Tim7/index.html'>activate account</a>", "utf-8", "html");
+			message.setText("Enter this code on your first login to activate your account ---->  "+token);
 		
 			
 			Transport.send(message);
@@ -81,26 +127,18 @@ public class UserService {
 		
 		
 		
-		UserDAO.addGuest((String)data.get("email"), (String)data.get("fname"), (String)data.get("lname"), (String)data.get("pwd"));
 	}
 	
-	@POST
-	@Path("/addManager")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void addManager(JSONObject data) {
-
-		String restId = (((String) data.get("city")).split(" ")[0]);
-		UserDAO.addManager((String)data.get("email"), (String)data.get("name"), (String)data.get("lName"), (String)data.get("pass"), restId);
-	}
-	
-	@POST
-	@Path("/check")
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.TEXT_PLAIN)
-	public boolean checkEmail(String email){
+	private String generateToken(){
+		char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < 7; i++) {
+		    char c = chars[random.nextInt(chars.length)];
+		    sb.append(c);
+		}
+		String token = sb.toString();
 		
-		return UserDAO.emailExists(email);
-		
+		return token;
 	}
 }

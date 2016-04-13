@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Random;
 
 import beans.Bartender;
 import beans.Cook;
@@ -133,7 +134,7 @@ public class UserDAO {
 		}
 	}
 	
-public static void addGuest(String email, String name, String lName, String pass) {
+public static void addGuest(String email, String name, String lName, String pass,String token) {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -147,9 +148,11 @@ public static void addGuest(String email, String name, String lName, String pass
 			ps.executeUpdate();
 			ps.close();
 			
-			PreparedStatement ps1 = connect.prepareStatement("insert into GUEST (USER_EMAIL, ACTIVATED) values(?, 0)");
-			ps1.setString(1, email);
+			PreparedStatement ps1 = connect.prepareStatement("insert into GUEST (USER_EMAIL, ACTIVATED, TOKEN) values(?, 0,?)");
 			
+			
+			ps1.setString(1, email);
+			ps1.setString(2, token);
 			ps1.executeUpdate();
 			ps1.close();
 			connect.close();
@@ -178,10 +181,62 @@ public static void addGuest(String email, String name, String lName, String pass
 			connect.close();
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 		
 		return response;
 	}
+	
+	public static boolean activate_acc(String email,String code){
+	boolean response=false;
+	try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+		PreparedStatement ps=connect.prepareStatement("select TOKEN from GUEST"+
+				" where USER_EMAIL=? ; ");
+		ps.setString(1, email);
+		ResultSet rs=ps.executeQuery();
+		
+		
+		if(rs.next()){
+			if(rs.getString(1).equals(code)){
+				response=true;
+				PreparedStatement ps1=connect.prepareStatement("UPDATE GUEST SET ACTIVATED=1 WHERE USER_EMAIL=?");
+				ps1.setString(1, email);
+				ps1.executeUpdate();
+				ps1.close();
+				
+			}
+		}
+		rs.close();
+		ps.close();
+		connect.close();
+	}catch(Exception e){
+		e.printStackTrace();
+		}
+	
+	
+	return response;
+	}
+	
+	public static void setNewToken(String email,String token){
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			
+			PreparedStatement ps1=connect.prepareStatement("UPDATE GUEST SET TOKEN=? WHERE USER_EMAIL=?");
+			ps1.setString(1, token);
+			ps1.setString(2, email);
+			ps1.executeUpdate();
+			ps1.close();
+			connect.close();
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

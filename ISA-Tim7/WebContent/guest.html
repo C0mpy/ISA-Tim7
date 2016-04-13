@@ -3,9 +3,44 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
-<script type="text/javascript" src="js/guest.js"></script>
-<h1>GUEST HOME PAGE</h1>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/guest.js"></script>
+	
+	
+	<div id="acc_code" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    	<div class="modal-dialog">
+
+   		 <!-- Modal content-->
+    		<div class="modal-content" >
+     			 <div class="modal-header">
+      				  
+       				 <h4 class="modal-title">Activate account</h4>
+     			 </div>
+      			<div class="modal-body">
+      			  <form  role="form">
+                  <div class="form-group">
+                    <label for="activationcode" >Enter activation code</label>
+                    
+                       <input type="email" class="form-control" 
+                      id="activationcode" placeholder="Token"/>
+                   
+                  </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+      
+        <button type="button" class="btn btn-default" onclick="resend_email()">Resend Email</button>
+        <button type="button" class="btn btn-default"  onclick="activate()">Confirm</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>
