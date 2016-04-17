@@ -3,7 +3,7 @@ $(window).load(function(){
 		$('#acc_code').modal('show');
 	
 	 }else{
-		 alert("ok")
+		 $(".profile-usertitle-name").append(sessionStorage.firstName+" "+sessionStorage.lastName)
 	 }
     });
 
@@ -47,4 +47,18 @@ function resend_email(){
 		
 	});
 	
+}
+
+function search_restaurants(){
+	
+}
+
+function search_people(){
+	$.ajax({
+		url: "../ISA-Tim7/rest/Users/search",
+		//todo
+		
+		
+		
+	});
 }

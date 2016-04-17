@@ -28,6 +28,7 @@ $(document).on('submit', '#register_form', function(e) {
 	   		
 	   		
 	   		alert("korisnik registrovan");
+	   		window.location.href="index.html";
 	   	},
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	alert("AJAX ERRORcina");
