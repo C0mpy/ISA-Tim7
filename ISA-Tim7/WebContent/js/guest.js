@@ -49,6 +49,86 @@ function resend_email(){
 	
 }
 
+function changeLname(){
+var lname=$("#lname").val();
+	
+	if(lname==""){
+		alert("popuni polje")
+	}else{
+		$.ajax({
+			url:"../ISA-Tim7/rest/user/changeLname",
+			type:"post",
+			data: JSON.stringify({
+				"user":sessionStorage.email,
+				"lname" : lname
+			}),
+			contentType:"application/json",
+			dataType:"text",
+			success:function(data){
+				//notifikacija ili banana
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+		    	alert("AJAX ERRORcina");	
+			}
+		});
+	}
+}
+
+function changeFname(){
+	var fname=$("#fname").val();
+	
+	if(fname==""){
+		alert("popuni polje")
+	}else{
+		$.ajax({
+			url:"../ISA-Tim7/rest/user/changeFname",
+			type:"post",
+			data: JSON.stringify({
+				"user":sessionStorage.email,
+				"fname" : fname
+			}),
+			contentType:"application/json",
+			dataType:"text",
+			success:function(data){
+				//notifikacija ili banana
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+		    	alert("AJAX ERRORcina");	
+			}
+		});
+	}
+}
+
+
+function changePassword(){
+	var oldpass=$("#oldpass").val();
+	var newpass=$("#newpass").val();
+	
+	if(oldpass=="" || newpass==""){
+		alert("popuni polja");
+	}else{
+	
+		$.ajax({
+			type:"post",
+			url:"../ISA-Tim7/rest/user/changePassword",
+			data: JSON.stringify({
+				"user":sessionStorage.email,
+				"oldp" : oldpass,
+				"newp" : newpass
+			}),
+			contentType:"application/json",
+			dataType:"text",
+			success:function(data){
+				alert(data);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+		    	alert("AJAX ERRORcina");	
+			}
+		});
+	}
+}
+
+
 function search_restaurants(){
 	
 }

@@ -134,6 +134,8 @@ public class UserDAO {
 		}
 	}
 	
+
+	
 public static void addGuest(String email, String name, String lName, String pass,String token) {
 		
 		try {
@@ -238,5 +240,79 @@ public static void addGuest(String email, String name, String lName, String pass
 		}
 	}
 	
+	public static boolean changeFname(String email, String fname){
+		boolean ret=false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			
+			PreparedStatement ps=connect.prepareStatement("UPDATE USER set F_NAME=? WHERE EMAIL=?");
+			ps.setString(1, fname);
+			ps.setString(2, email);
+			ps.executeUpdate();
+			
+			ps.close();
+			connect.close();
+			ret=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
+	public static boolean changeLname(String email, String lname){
+		boolean ret=false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			
+			PreparedStatement ps=connect.prepareStatement("UPDATE USER set L_NAME=? WHERE EMAIL=?");
+			ps.setString(1, lname);
+			ps.setString(2, email);
+			ps.executeUpdate();
+			
+			ps.close();
+			connect.close();
+			ret=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	public static boolean changePassword(String email, String newp,String oldp){
+		boolean ret=false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			
+			PreparedStatement ps=connect.prepareStatement("SELECT PASS FROM USER  WHERE EMAIL=?");
+			
+			ps.setString(1, email);
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()){
+				if(!rs.getString(1).equals(oldp)){
+					System.out.println(rs.getString(1)+oldp);
+					return ret;
+				}
+			}
+			rs.close();
+			ps.close();
+			
+			PreparedStatement ps1=connect.prepareStatement("UPDATE USER set PASS=? WHERE EMAIL=?");
+			ps1.setString(1, newp);
+			ps1.setString(2, email);
+			ps1.executeUpdate();
+			
+			ps1.close();
+			connect.close();
+			ret=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
 	
 }

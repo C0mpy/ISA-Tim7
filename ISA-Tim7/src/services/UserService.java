@@ -90,6 +90,39 @@ public class UserService {
 		
 	}
 	
+	@POST
+	@Path("/changeFname")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String changeFname(JSONObject data){
+		if(UserDAO.changeFname((String) data.get("user"),(String) data.get("fname")))
+			return "ok";
+		else
+			return "not_ok";
+	}
+	
+	@POST
+	@Path("/changeLname")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String changeLname(JSONObject data){
+		if(UserDAO.changeLname((String) data.get("user"),(String) data.get("lname")))
+			return "ok";
+		else
+			return "not_ok";
+	}
+	
+	@POST
+	@Path("/changePassword")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String changePassword(JSONObject data){
+		if(UserDAO.changePassword((String) data.get("user"),(String) data.get("newp"),(String) data.get("oldp")))
+			return "ok";
+		else
+			return "not_ok";
+	}
+	
 	private void sendActivationToken(String email,String token){
 		final String username = "odjebigaguglu@gmail.com";
 		final String password = "kuracbakin123 ";

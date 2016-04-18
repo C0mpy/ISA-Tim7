@@ -45,7 +45,7 @@
 							People </a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="#settings" data-toggle="tab">
 							<i class="glyphicon glyphicon-cog"></i>
 							Account Settings </a>
 						</li>
@@ -58,7 +58,41 @@
 		</div>
 		<div class="col-md-9">
             <div class="profile-content">
-			   Some user related content goes here...
+			   <div class="tab-content">
+	    	<div class="tab-pane " id="settings"  >
+	    		<div class="container-fluid">
+	    			<div class="col-lg-9">
+      					<h4><small>ACCOUNT SETTINGS</small></h4>
+      					<hr>
+  						<table>
+  							<tr>
+  							<td><label for="fname">First Name</label></td>
+  							<td><input type="text" class="form-control" id="fname"></td>
+  							<td><input type="button" value="Change" onclick="changeFname()"></td>
+  							</tr>
+  							<tr>
+  							<td><label for="lname">Last Name</label></td>
+  							<td><input type="text" class="form-control" id="lname"></td>
+  							<td><input type="button" value="Change" onclick="changeLname()"></td>
+  							</tr>
+  							<tr>
+  							<td><hr></td>
+  							</tr>
+  							<tr>
+  							<td><label for="oldpass">Old Password</label></td>
+  							<td><input type="text" class="form-control" id="oldpass"></td>
+  							</tr>
+  							<tr>
+  							<td><label for="newpass">New Password</label></td>
+  							<td><input type="text" class="form-control" id="newpass"></td>
+  							<td><input type="button" value="Change" onclick="changePassword()"></td>
+  							</tr>
+  						
+  						</table>
+					</div>
+	      		</div>
+			</div>
+			</div>
             </div>
 		</div>
 	</div>
