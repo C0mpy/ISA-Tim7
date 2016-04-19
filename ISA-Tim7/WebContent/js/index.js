@@ -35,10 +35,10 @@ $(document).on('submit', '#form', function(e) {
 		   			sessionStorage.shoeSize = data.shoe;
 	   				
 	   				if(sessionStorage.employeeType == "COOK") {
-	   					
+	   					window.location.href = "cook.html";
 	   				}
 	   				else if(sessionStorage.employeeType == "BARTENDER") {
-	   					
+	   					window.location.href = "bartender.html";
 	   				}
 	   				else if(sessionStorage.employeeType == "WAITER") {
 	   					window.location.href = "waiter.html";

@@ -77,8 +77,9 @@ public class EmployeeService {
 		
 	}
 	
+	//u bazu se upisuju i citaju u yyyy-mm-dd formatu
 	public static final Pattern VALID_DATE_BIRTH_REGEX = 
-		Pattern.compile("\\d{4}/\\d{2}/\\d{2}");
+		Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
 	
 	private boolean isValidDate(String dateBirth) {
 		Matcher matcher = VALID_DATE_BIRTH_REGEX .matcher(dateBirth);
@@ -115,5 +116,20 @@ public class EmployeeService {
 		return EmployeeDAO.getShifts((String)data.get("email"));
 		
 	}
+	
+	@POST
+	@Path("/editProfile")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void editProfile(JSONObject data){
+		
+		EmployeeDAO.editProfile((String)data.get("f_name"), (String)data.get("l_name"), 
+				(String)data.get("email"), (String)data.get("pass")
+				, (String)data.get("type"), Integer.parseInt((String)data.get("id_res"))
+				, (String)data.get("birth"), (String)data.get("dress")
+				, (String)data.get("shoe"));
+
+	}
+	
 	
 }

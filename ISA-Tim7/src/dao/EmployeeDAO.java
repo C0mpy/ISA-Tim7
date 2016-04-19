@@ -130,4 +130,33 @@ public class EmployeeDAO {
 		}
 		return null;
 	}
+	
+	public static void editProfile(String f_name, String l_name, String email,
+			String pass, String type, int id_res, String birth, String dress, String shoe) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("update USER set F_NAME=?, L_NAME=?, PASS=? where EMAIL=?");
+			ps.setString(1, f_name);
+			ps.setString(2, l_name);
+			ps.setString(3, pass);
+			ps.setString(4, email);
+			ps.executeUpdate();
+			ps.close();
+			
+			PreparedStatement ps1 = connect.prepareStatement("update EMPLOYEE set EMP_TYPE=? where USER_EMAIL=? and RESTAURANT_ID_RES=?");
+			ps1.setString(1, type);
+			ps1.setString(2, email);
+			ps1.setInt(3, id_res);
+			ps1.executeUpdate();
+			ps1.close();
+			connect.close(); 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

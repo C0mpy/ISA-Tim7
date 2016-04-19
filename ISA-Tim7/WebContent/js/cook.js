@@ -1,5 +1,9 @@
-$(document).ready(function() {
-
+$( document ).ready(function() {
+    
+	$("#showOrders").on('shown.bs.modal', function () {
+		loadOrders();
+	});
+	
 	$("#calendar").fullCalendar({
 	});
 
@@ -10,9 +14,65 @@ $(document).ready(function() {
 	$("#editProfile").on('show.bs.modal', function () {
 		loadEmployeeData();
 	})
-	
 	fillEvents();
+
 });
+
+function loadOrders() {
+	
+	$('#orders').empty();
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/order/getOpen",
+	   	type : "Post",
+	   	data : JSON.stringify({
+			"rest" : sessionStorage.restaurantId,
+			"employee" : "COOK"
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+	   	success : function(data) {
+	   		
+	   		list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+	   		
+	   		if (list.length !=0) {
+	   			
+			   	$.each(list, function(index, obj) {	   		   		
+			   		$("#orders")
+			   	    .append($('<tr>')
+			   	        .append($('<td>')
+			   	            .append($('<p>')
+			   	                .text(obj.orderId)
+			   	            )
+			   	            .addClass("first")
+			   	        )
+			   	        .append($('<td>')
+			   	        	.append($('<p>')
+			   	        		.text(obj.name)
+			   	        	)
+			   	        	.addClass("second")
+			   	        )
+			   	        .append($('<td>')
+				   	        .append($('<button>')
+				   	        	.addClass("btn btn-primary")
+				   	        	.text("Take Order")
+				   	        	.click(function() {
+				   	        		console.log(obj.orderId);
+				   	        	})
+				   	        )
+				   	        .addClass("third")
+				   	    )
+				   	)
+
+		   		});
+		   
+		   	}
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERROR");
+	    }
+	    			
+	});
+}
 
 function fillEvents() {
 	
@@ -80,5 +140,7 @@ function saveChanges() {
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	alert("Ajax error");
 	    }
-	});	   	
+	});
+	   	
 }
+
