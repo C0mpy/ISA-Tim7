@@ -114,7 +114,20 @@ function loadEmployeeData() {
 	$("#empPass").val(sessionStorage.password);
 	$("#empType").val(sessionStorage.employeeType);
 	$("#empBirth").val(sessionStorage.dateOfBirth);
+	$("#empDrSize label input:radio").each(function() {
+		if($(this).val() == sessionStorage.dressSize) {
+			$(this).prop("checked", true);
+			$(this).parent().addClass("active");
+		} 
+	});
+	$("#empShSize label input:radio").each(function() {
+		if($(this).val() == sessionStorage.shoeSize) {
+			$(this).prop("checked", true);
+			$(this).parent().addClass("active");
+		} 
+	});
 }
+
 
 function saveChanges() {
 	

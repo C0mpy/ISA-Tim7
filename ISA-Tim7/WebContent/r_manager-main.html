@@ -126,58 +126,56 @@
 <body>
 	
 	<div class="container-fluid " >
-  	<div class="row content">
-	<div class="col-sm-3 sidenav" style="background:silver">
-      <h4>Restaurant Manager </h4>
-      <label></label>
-      <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#home" ><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a></li>
-        <li><a href="#employees" onclick = "getEmployees()" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Employees</a></li>
-        <li><a href="#restaurant" data-toggle="tab"><span class="glyphicon glyphicon-cutlery"></span>&nbsp;&nbsp;Restaurant</a></li>
-        <li><a href="#suppliers"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;&nbsp;Suppliers</a></li>
-        <li><a href="#report"><span class="glyphicon glyphicon-stats"></span>&nbsp;&nbsp;Report</a></li>
-      </ul><br>
-      
-    </div>
-    
-    <div class="col-sm-9 sidenav">
-    	<div class="tab-content">
-	    	<div class="tab-pane " id="employees"  >
-	    		<div class="container-fluid">
-	    			<div class="col-lg-9">
-      					<h4><small>EMPLOYEES</small></h4>
-      					<hr>
-  						<div class="row">
-    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#addEmplModal">Add Employee</button>
-  						</div>
-  						<hr>
-  						<br><br>
-  						<div class="row"><table class="table" id="empTable"></table></div>
+	  	<div class="row content">
+	  	
+			<div class="col-sm-3 sidenav" style="background:silver">
+			    <h4>Restaurant Manager </h4>
+			    <label></label>
+			    <ul class="nav nav-pills nav-stacked">
+				    <li class="active"><a href="#home" ><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a></li>
+				    <li><a href="#employees" onclick = "getEmployees()" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Employees</a></li>
+				    <li><a href="#restaurant" data-toggle="tab"><span class="glyphicon glyphicon-cutlery"></span>&nbsp;&nbsp;Restaurant</a></li>
+				    <li><a href="#suppliers"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;&nbsp;Suppliers</a></li>
+				    <li><a href="#report"><span class="glyphicon glyphicon-stats"></span>&nbsp;&nbsp;Report</a></li>
+			    </ul><br>
+		      
+		    </div>
+	    
+		    <div class="col-sm-9 sidenav">
+		    	<div class="tab-content">
+		    	
+			    	<div class="tab-pane " id="employees"  >
+			    		<div class="container-fluid">
+			    			<div class="col-lg-9">
+		      					<h4><small>EMPLOYEES</small></h4>
+		      					<hr>
+		  						<div class="row">
+		    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#addEmplModal">Add Employee</button>
+		  						</div>
+		  						<hr>
+		  						<br><br>
+		  						<div class="row"><table class="table" id="empTable"></table></div>
+							</div>
+			      		</div>
 					</div>
-	      		</div>
+				
+					<div class="tab-pane" id="restaurant"  >
+			    		<div class="container-fluid">
+			    			<div class="col-sm-9">
+		      					<h4><small>RESTAURANT</small></h4>
+		      					<hr>
+		  						<div class="row">
+		    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyName">Modify Name</button>
+		  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyDesc">Modify Description</button>
+		  						</div>
+		  						<hr>
+							</div>
+			      		</div>
+					</div>
+					
+				</div>
 			</div>
-			
-			<div class="tab-pane" id="restaurant"  >
-	    		<div class="container-fluid">
-	    			<div class="col-sm-9">
-      					<h4><small>RESTAURANT</small></h4>
-      					<hr>
-  						<div class="row">
-    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyName">Modify Name</button>
-  							
-  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyDesc">Modify Description</button>
-  						</div>
-  						<hr>
-  						
-					</div>
-	      		</div>
-	</div>
-			
-			
 		</div>
-	</div>
-			
-	</div>
 	</div>
 	
 	<footer class="container-fluid">
