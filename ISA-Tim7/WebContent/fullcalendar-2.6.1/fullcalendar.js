@@ -9284,7 +9284,7 @@ function Calendar_constructor(element, overrides) {
 Calendar.defaults = {
 
 	titleRangeSeparator: ' \u2014 ', // emphasized dash
-	monthYearFormat: 'MMMM YYYY', // required for en. other languages rely on datepicker computable option
+	monthYearFormat: 'MMMM YYYY', // required for en. other languages rely on dPicker computable option
 
 	defaultTimedEventDuration: '02:00:00',
 	defaultAllDayEventDuration: { days: 1 },
@@ -9408,38 +9408,38 @@ var langOptionHash = FC.langs = {}; // initialize and expose
 // TODO: rename everything "lang" to "locale", like what the moment project did
 
 
-// Initialize jQuery UI datepicker translations while using some of the translations
-// Will set this as the default language for datepicker.
-FC.datepickerLang = function(langCode, dpLangCode, dpOptions) {
+// Initialize jQuery UI dPicker translations while using some of the translations
+// Will set this as the default language for dPicker.
+FC.dPickerLang = function(langCode, dpLangCode, dpOptions) {
 
 	// get the FullCalendar internal option hash for this language. create if necessary
 	var fcOptions = langOptionHash[langCode] || (langOptionHash[langCode] = {});
 
-	// transfer some simple options from datepicker to fc
+	// transfer some simple options from dPicker to fc
 	fcOptions.isRTL = dpOptions.isRTL;
 	fcOptions.weekNumberTitle = dpOptions.weekHeader;
 
-	// compute some more complex options from datepicker
+	// compute some more complex options from dPicker
 	$.each(dpComputableOptions, function(name, func) {
 		fcOptions[name] = func(dpOptions);
 	});
 
-	// is jQuery UI Datepicker is on the page?
-	if ($.datepicker) {
+	// is jQuery UI dPicker is on the page?
+	if ($.dPicker) {
 
 		// Register the language data.
-		// FullCalendar and MomentJS use language codes like "pt-br" but Datepicker
+		// FullCalendar and MomentJS use language codes like "pt-br" but dPicker
 		// does it like "pt-BR" or if it doesn't have the language, maybe just "pt".
 		// Make an alias so the language can be referenced either way.
-		$.datepicker.regional[dpLangCode] =
-			$.datepicker.regional[langCode] = // alias
+		$.dPicker.regional[dpLangCode] =
+			$.dPicker.regional[langCode] = // alias
 				dpOptions;
 
 		// Alias 'en' to the default language data. Do this every time.
-		$.datepicker.regional.en = $.datepicker.regional[''];
+		$.dPicker.regional.en = $.dPicker.regional[''];
 
-		// Set as Datepicker's global defaults.
-		$.datepicker.setDefaults(dpOptions);
+		// Set as dPicker's global defaults.
+		$.dPicker.setDefaults(dpOptions);
 	}
 };
 
@@ -9472,7 +9472,7 @@ FC.lang = function(langCode, newFcOptions) {
 };
 
 
-// NOTE: can't guarantee any of these computations will run because not every language has datepicker
+// NOTE: can't guarantee any of these computations will run because not every language has dPicker
 // configs, so make sure there are English fallbacks for these in the defaults file.
 var dpComputableOptions = {
 

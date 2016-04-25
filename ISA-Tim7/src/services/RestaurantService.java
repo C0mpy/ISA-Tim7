@@ -43,5 +43,12 @@ public class RestaurantService {
 		return RestaurantDAO.getAll();
 	}
 	
-	
+	@POST
+	@Path("/plan")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void plan(JSONObject data) {
+		
+		RestaurantDAO.addPlan((String)data.get("id_res"), (String)data.get("plan"));
+	}
 }

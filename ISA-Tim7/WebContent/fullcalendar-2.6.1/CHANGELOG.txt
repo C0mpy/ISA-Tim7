@@ -848,7 +848,7 @@ v1.3 (2009-09-21)
 	- x removeEvent       -> removeEvents
 	- x getEventsByID     -> clientEvents
 - Utilities:
-	- 'formatDate' format string completely changed (inspired by jQuery UI datepicker + datejs)
+	- 'formatDate' format string completely changed (inspired by jQuery UI dPicker + datejs)
 	- 'formatDates' added to support date-ranges
 - Google Calendar Options:
 	- x draggable -> editable

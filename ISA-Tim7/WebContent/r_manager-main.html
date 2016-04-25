@@ -7,6 +7,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/r_manager-main.js"></script>
+	
 	<link href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
 	<script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 	<script src="js/bootbox.min(1).js"></script>
@@ -15,11 +16,24 @@
 	<link href='fullcalendar-2.6.1/fullcalendar.css' rel='stylesheet' />
 	<link href='fullcalendar-2.6.1/fullcalendar.print.css' rel='stylesheet' media='print' />
 	<script src='fullcalendar-2.6.1/lib/moment.min.js'></script>
-	<script src='fullcalendar-2.6.1/lib/jquery.min.js'></script>
+	
 	<script src='fullcalendar-2.6.1/lib/jquery-ui.custom.min.js'></script>
 	<script src='fullcalendar-2.6.1/fullcalendar.min.js'></script>
 	
 	<style>
+	
+	canvas {
+    	border: 1px solid #999;
+	}
+	
+	#toolbar {
+		float: left;
+		width: 200px;
+		padding: 0 10px;
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: right;
+	}
 
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
     .row.content {height: 1500px}
@@ -167,6 +181,7 @@
 		  						<div class="row">
 		    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyName">Modify Name</button>
 		  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyDesc">Modify Description</button>
+		  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyPlan" onclick="setCanvas()">Restaurant Plan</button>
 		  						</div>
 		  						<hr>
 							</div>
@@ -226,6 +241,8 @@
         						</div>
 
 								<script>
+								
+								
    									$('.input-group.date').datepicker({
         							format: "yyyy/mm/dd",
         							startDate: "1940-01-01",
@@ -336,39 +353,135 @@
 	        		<h4 class="modal-title">Add Schedule</h4>
 	      		</div>
 	      		<div class="modal-body" id="mb">
-	      			
+	      			<div id='wrap'>
+						<div id='external-events'>
+							<h4>Shifts</h4>
+							<hr>
+						
+							<div class="form-group">
+								<label for="st">Start Time:</label>
+								<input type="text" class="form-control" id="st">
+							</div>
+
+							<div class="form-group">
+								<label for="en">End Time:</label>
+								<input type="text" class="form-control" id="en">
+							</div>
+			
+							<button type="button" class="btn btn-info btn-sm" onclick="addShift()">Add Shift</button>
+							<p>
+								<input type='checkbox' id='drop-remove' />
+								<label for='drop-remove'>remove after drop</label>
+							</p>
+						</div>
+		
+						<div id='calendar'></div>
+						<div style='clear:both'></div>
+						<div class="modal-footer">
+		   					<button type="button" class="btn btn-primary" onclick="saveShifts()">Save</button>
+		   					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
 	      		</div>
 	     	</div>
 		</div>
 	</div>
 	
-	<div id='wrap' >
-		<div id='external-events'>
-			<h4>Shifts</h4>
+	
+	
+	<div id="modifyPlan" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Restaurant Plan</h4>
+	      		</div>
+	      		<div class="modal-body" >
+	
+  		
+	<div class="col-sm-9">
+    <canvas id="c" width="620" height="500"></canvas>
+	</div>
+	
+	<div class="col-sm-3">
+	<div id='toolbar'>
+			<h4>Choose Element: </h4>
 			<hr>
-			<div class="form-group">
-				<label for="st">Start Time:</label>
-				<input type="text" class="form-control" id="st">
-			</div>
-
-			<div class="form-group">
-				<label for="en">End Time:</label>
-				<input type="text" class="form-control" id="en">
+		
+			
+				<button type="button" class="btn btn-primary col-sm-12 text-align:left" data-toggle="collapse" data-target="#tables">
+					<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Tables</button>
+			
+				<div id="tables" class="collapse">
+					<img src='http://localhost:8081/GoJs/image/table22.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+					<button type="button" class="btn btn-primary btn-xs" onclick="addTable()">Add</button>
+			
+					<img src='http://localhost:8081/GoJs/image/table32.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+					<button type="button" class="btn btn-primary btn-xs" onclick="addTable3()">Add</button>
+					
+					<img src='http://localhost:8081/GoJs/image/table33.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+					<button type="button" class="btn btn-primary btn-xs" onclick="addTable22()">Add</button>
+						
+				</div>
+			
+			
+			<button type="button" class="btn btn-primary col-sm-12" data-toggle="collapse" data-target="#wall">
+				<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Wall</button>
+			
+			<div id="wall" class="collapse">
+				<img src='http://localhost:8081/GoJs/image/wall.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+				<button type="button" class="btn btn-primary btn-xs" onclick="addWall()">Add</button>
+			
+				<img src='http://localhost:8081/GoJs/image/corner2.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+				<button type="button" class="btn btn-primary btn-xs" onclick="addCorner()">Add</button>
+					
 			</div>
 			
-			<button type="button" class="btn btn-info btn-sm" onclick="addShift()">Add Shift</button>
-			<p>
-				<input type='checkbox' id='drop-remove' />
-				<label for='drop-remove'>remove after drop</label>
-			</p>
+			<button type="button" class="btn btn-primary col-sm-12" data-toggle="collapse" data-target="#doors">
+				<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Doors</button>
+			
+			<div id="doors" class="collapse">
+				<img src='http://localhost:8081/GoJs/image/left_door.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+				<button type="button" class="btn btn-primary btn-xs" onclick="addLeftDoor()">Add</button>
+			
+				<img src='http://localhost:8081/GoJs/image/right_door.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+				<button type="button" class="btn btn-primary btn-xs" onclick="addRightDoor()">Add</button>
+					
+			</div>
+			
+			<button type="button" class="btn btn-primary col-sm-12" data-toggle="collapse" data-target="#toilet">
+				<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Toilet</button>
+			
+			<div id="toilet" class="collapse">
+				<img src='http://localhost:8081/GoJs/image/wc1.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+				<button type="button" class="btn btn-primary btn-xs" onclick="addToilet()">Add</button>
+					
+				<img src='http://localhost:8081/GoJs/image/wc2.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+				<button type="button" class="btn btn-primary btn-xs" onclick="addToiletSink()">Add</button>
+				
+				
+				<img src='http://localhost:8081/GoJs/image/wc3.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
+				<button type="button" class="btn btn-primary btn-xs" onclick="addToiletLogo()">Add</button>
+			
+					
+			</div>
+
 		</div>
 		
-		<div id='calendar'></div>
+		
+		</div>
+		
 		<div style='clear:both'></div>
 		<div class="modal-footer">
-		   	<button type="button" class="btn btn-primary" onclick="saveShifts()">Save</button>
-		   	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" onclick="savePlan()">Save</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		</div>
+		
+	</div>
+	
+	</div>
+	</div>
 	</div>
 	
 </body>

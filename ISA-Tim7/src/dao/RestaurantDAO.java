@@ -55,4 +55,23 @@ public class RestaurantDAO {
 		return null;
 		
 	}
+
+	public static void addPlan(String id_res, String plan) {
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("insert into PLAN (PLAN_RES) value(?) ON DUPLICATE KEY UPDATE ID_RES=?");
+			ps.setString(1, plan);
+			ps.setString(2, id_res);
+			ps.executeUpdate();
+			ps.close();
+			connect.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

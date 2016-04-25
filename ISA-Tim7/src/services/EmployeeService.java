@@ -79,9 +79,11 @@ public class EmployeeService {
 	
 	//u bazu se upisuju i citaju u yyyy-mm-dd formatu
 	public static final Pattern VALID_DATE_BIRTH_REGEX = 
-		Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+		Pattern.compile("\\d{4}/\\d{2}/\\d{2}");
 	
 	private boolean isValidDate(String dateBirth) {
+		if(dateBirth.length()!=10)
+			return false;
 		Matcher matcher = VALID_DATE_BIRTH_REGEX .matcher(dateBirth);
 		return matcher.find();
 	}

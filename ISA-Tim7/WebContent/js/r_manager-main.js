@@ -3,6 +3,59 @@
  */
 
 
+$.getScript("js/fabric.js", function(){
+
+});
+
+$(document).ready(function() {
+	
+	draggableEvents();
+
+
+	/* initialize the calendar
+	-----------------------------------------------------------------*/
+
+	$('#calendar').fullCalendar({
+		theme: true,
+		
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month'
+		},
+		isUserCreated: true,
+		defaultView: 'month',
+		editable: true,
+		droppable: true, // this allows things to be dropped onto the calendar
+		drop: function(event) {
+			
+		
+			shifts.push(event.format())
+			
+			// is the "remove after drop" checkbox checked?
+			if ($('#drop-remove').is(':checked')) {
+				// if so, remove the element from the "Draggable Events" list
+				$(this).remove();
+			}
+		},
+		
+		eventReceive: function(event){
+			shifts[shifts.length-1] = shifts[shifts.length-1] +" "+ event.title;
+			
+		},
+		
+		eventDrop: function(event, delta, revertFunc) {
+	        shifts.push(event.start.format()+" "+event.title);
+	       
+
+	    },
+		
+		eventDragStop: function(event, jsEvent, ui, view) {
+			shifts.splice(shifts.indexOf(event.start.format()+" "+event.title),1);
+			
+		}
+	});
+});
 
 function getEmployees(){
 		
@@ -78,6 +131,9 @@ var currentEmail = {};
 var currentId = {};
 function scheduleEmployee(){
 	
+	
+	
+	/*
 	//Get all client events
 	var allEvents = $('#calendar').fullCalendar('clientEvents');
 
@@ -90,18 +146,26 @@ function scheduleEmployee(){
 	    }
 	});
 
-	//Remove events with ids of non usercreated events
-	$('#calendar').fullCalendar( 'removeEvents', userEventIds);
+	
+	*/
 	
 	
-	$('#calendar').fullCalendar('rerenderEvents');
-	$('#calendar').fullCalendar('refresh');
 	
 	shifts=[];
 	currentEmail = arguments[0];
 	currentId = arguments[1];
 	calendarReady();
 	$('#mb').append($('#wrap'));
+	
+	//Remove events with ids of non usercreated events
+	$('#calendar').fullCalendar( 'removeEvents', userEventIds);
+	
+	$('#calendar').fullCalendar('render');
+	
+	$('#calendar').fullCalendar('rerenderEvents');
+	$('#calendar').fullCalendar('refresh');
+	
+	
 };
 
 function saveShifts(){
@@ -192,52 +256,7 @@ function draggableEvents(){
 function calendarReady() {
 
 
-	draggableEvents();
-
-
-	/* initialize the calendar
-	-----------------------------------------------------------------*/
-
-	$('#calendar').fullCalendar({
-		theme: true,
-		
-		header: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'month'
-		},
-		isUserCreated: true,
-		defaultView: 'month',
-		editable: true,
-		droppable: true, // this allows things to be dropped onto the calendar
-		drop: function(event) {
-			
-		
-			shifts.push(event.format())
-			
-			// is the "remove after drop" checkbox checked?
-			if ($('#drop-remove').is(':checked')) {
-				// if so, remove the element from the "Draggable Events" list
-				$(this).remove();
-			}
-		},
-		
-		eventReceive: function(event){
-			shifts[shifts.length-1] = shifts[shifts.length-1] +" "+ event.title;
-			
-		},
-		
-		eventDrop: function(event, delta, revertFunc) {
-	        shifts.push(event.start.format()+" "+event.title);
-	       
-
-	    },
-		
-		eventDragStop: function(event, jsEvent, ui, view) {
-			shifts.splice(shifts.indexOf(event.start.format()+" "+event.title),1);
-			
-		}
-	});
+	
 
 }
 
@@ -247,4 +266,167 @@ function addShift() {
 	$('#external-events')
 			   		.append("<div class='fc-event'>"+st.value+"-"+en.value+"</div>");
 	draggableEvents();
+}
+
+
+var canvas=null;
+
+function addCorner(){
+	 
+	 fabric.Image.fromURL('http://localhost:8081/ISA-Tim7/image/corner2.png', function(img) {
+		    img.scale(0.5).set({
+		      left: 0,
+		      top: 0,
+		      cornerSize:6
+		      
+		    });
+		    canvas.add(img).setActiveObject(img);
+		  });
+}
+
+function addWall(){
+	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wall2.png', function(img) {
+	    img.scale(0.5).set({
+	      left: 0,
+	      top: 0,
+	      cornerSize:4    
+	    });
+	    canvas.add(img).setActiveObject(img);
+	  });
+	
+}
+function addTable(){
+	  fabric.Image.fromURL('http://localhost:8081/GoJs/image/table22.png', function(img) {
+		    img.scale(0.5).set({
+		      left: 0,
+		      top: 0,
+		      cornerSize:6
+		    });
+		    canvas.add(img).setActiveObject(img);
+		  });
+
+  }
+function addTable3(){
+	  fabric.Image.fromURL('http://localhost:8081/GoJs/image/table32.png', function(img) {
+		    img.scale(0.5).set({
+		      left: 0,
+		      top: 0,
+		      cornerSize:6
+		    });
+		    canvas.add(img).setActiveObject(img);
+		  });
+
+  }
+
+function addTable22(){
+	  fabric.Image.fromURL('http://localhost:8081/GoJs/image/tab22.png', function(img) {
+		    img.scale(0.5).set({
+		      left: 0,
+		      top: 0,
+		      cornerSize:6
+		    });
+		    canvas.add(img).setActiveObject(img);
+		  });
+
+  }
+
+function addRightDoor(){
+	fabric.Image.fromURL('http://localhost:8081/GoJs/image/right_door.png', function(img) {
+	    img.scale(0.8).set({
+	      left: 0,
+	      top: 0,
+	      cornerSize:6
+	    });
+	    canvas.add(img).setActiveObject(img);
+	  });
+}
+
+function addLeftDoor(){
+	fabric.Image.fromURL('http://localhost:8081/GoJs/image/left_door.png', function(img) {
+	    img.scale(0.8).set({
+	      left: 0,
+	      top: 0,
+	      cornerSize:6
+	    });
+	    canvas.add(img).setActiveObject(img);
+	  });
+}
+
+function addToilet(){
+	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wc1.png', function(img) {
+	    img.scale(0.8).set({
+	      left: 0,
+	      top: 0,
+	      cornerSize:6
+	    });
+	    canvas.add(img).setActiveObject(img);
+	  });
+}
+
+function addToiletSink(){
+	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wc2.png', function(img) {
+	    img.scale(0.8).set({
+	      left: 0,
+	      top: 0,
+	      cornerSize:6
+	    });
+	    canvas.add(img).setActiveObject(img);
+	  });
+}
+
+function addToiletLogo(){
+	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wc3.png', function(img) {
+	    img.scale(0.8).set({
+	      left: 0,
+	      top: 0,
+	      cornerSize:6
+	    });
+	    canvas.add(img).setActiveObject(img);
+	  });
+}
+
+function setCanvas(){
+	
+	if(canvas==null){
+		canvas = new fabric.Canvas('c');
+	}else{
+		canvas.clear();
+	}
+	
+	fabric.Object.prototype.transparentCorners = true;
+	
+	
+}
+function savePlan(){
+	
+	var json = canvas.toJSON();
+	json = JSON.stringify(json);
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/plan",
+	   	type : "Post",
+	   	data : JSON.stringify({
+			"id_res": sessionStorage.restaurantId,
+			"plan": json
+		}),
+	   	contentType : 'application/json',
+		dataType : 'text',
+	   	success : function(data) {
+	   		bootbox.alert("Restauran plan has successfully modified");
+	   		//$('#addEmplModal').modal('toggle');
+	   		
+	   			
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("Ajax error");
+	    },
+	   	
+	});	
+	
+}
+
+function loadPlan(){
+	
+	canvas.clear();
+	canvas.loadFromJSON(str);
 }
