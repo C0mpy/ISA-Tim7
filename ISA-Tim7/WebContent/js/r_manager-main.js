@@ -231,6 +231,155 @@ function addEmployee() {
 	   	
 	});	
 };
+function printFood(){
+	$('#productTable').empty();
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/getFood",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"id_res": sessionStorage.restaurantId
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+	   	success : function(data) {
+	   		
+	   		list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+	   		
+	   		if (list.length !=0) {
+	   			
+			   	$.each(list, function(index, obj) {	   		
+			   		
+			   		$('#productTable')
+			   		.append(
+			   				"<thead>" +
+			   				"<tr>"+
+			   					"<th>Name</th>" +
+			   					"<th>Price</th>" + 
+			   					"<th>Type</th>" +
+			   				"</tr>" +
+			   				"</thead>" +
+			   				"<tbody>"+
+			   					"<tr>"+
+			   					"<td>"+obj.name+"</td>"+
+			   					"<td>"+obj.price+"<span class=\"glyphicon glyphicon-euro \" style=\"font-size:14px\"></td>"+
+			   					"<td>"+obj.type+"</td>"+
+			   					"</tr></tbody>+" +
+			   					"<thead>" +
+			   				"<tr>"+
+			   					"<th>Description</th>" +
+			   				"</tr>" +
+			   				"</thead>" +
+			   				"<tbody>"+
+			   					"<tr>"+
+			   					"<td>"+obj.description+"</td>"+
+			   					"</tr>" +
+			   					"<tr>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyFood()\">Modify</button>" +
+			   					"&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"deleteFood()\">Delete</button></td>" +
+			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
+			   					"</tbody>")
+		   		});
+			   	
+		   	}
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERROR");
+	    }
+	    			
+	});
+	
+}
+
+function printBeverage(){
+	$('#productTable').empty();
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/getBeverage",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"id_res": sessionStorage.restaurantId
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+	   	success : function(data) {
+	   		
+	   		list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+	   		
+	   		if (list.length !=0) {
+	   			
+			   	$.each(list, function(index, obj) {	   		
+			   		
+			   		$('#productTable')
+			   		.append(
+			   				"<thead>" +
+			   				"<tr>"+
+			   					"<th>Name</th>" +
+			   					"<th>Price</th>" + 
+			   					"<th>Type</th>" +
+			   				"</tr>" +
+			   				"</thead>" +
+			   				"<tbody>"+
+			   					"<tr>"+
+			   					"<td>"+obj.name+"</td>"+
+			   					"<td>"+obj.price+"<span class=\"glyphicon glyphicon-euro \" style=\"font-size:14px\"></td>"+
+			   					"<td>"+obj.type+"</td>"+
+			   					"</tr></tbody>+" +
+			   					"<thead>" +
+			   				"<tr>"+
+			   					"<th>Description</th>" +
+			   				"</tr>" +
+			   				"</thead>" +
+			   				"<tbody>"+
+			   					"<tr>"+
+			   					"<td>"+obj.description+"</td>"+
+			   					"</tr>" +
+			   					"<tr>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyFood()\">Modify</button>" +
+			   					"&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"deleteFood()\">Delete</button></td>" +
+			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
+			   					"</tbody>")
+		   		});
+			   	
+		   	}
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERROR");
+	    }
+	    			
+	});
+	
+	
+}
+function addProduct() {
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/addProduct",
+	   	type : "Post",
+	   	data : JSON.stringify({
+			"type" : $( "#productType option:selected" ).text(),
+			"name" : $("#productName").val(),
+			"description" : $("#productDescription").val(),
+			"price" : $("#productPrice").val(),
+			"id_res": sessionStorage.restaurantId
+		}),
+	   	contentType : 'application/json',
+		dataType : 'text',
+	   	success : function(data) {
+	   		if(data!="")
+	   			$('#productError').html(data);
+	   		else{
+	   			
+	   			bootbox.alert("Product has successfully added");
+	   			$('#addProductModal').modal('toggle');
+	   		}
+	   			
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("Ajax error");
+	    },
+	   	
+	});	
+};
+
 function draggableEvents(){
 	/* initialize the external events
 	-----------------------------------------------------------------*/
@@ -253,12 +402,6 @@ function draggableEvents(){
 	});
 }
 
-function calendarReady() {
-
-
-	
-
-}
 
 
 function addShift() {

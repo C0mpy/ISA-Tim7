@@ -7,6 +7,7 @@ public class Product {
 	double price;
 	String name;
 	int idRestaurant;
+	String description;
 	
 	public Product(int id, String type, double price, String name, int idRestaurant) {
 		super();
@@ -15,6 +16,23 @@ public class Product {
 		this.price = price;
 		this.name = name;
 		this.idRestaurant = idRestaurant;
+	}
+	
+	public Product(String type, double price, String name, String description) {
+		
+		this.type = type;
+		this.price = price;
+		this.name = name;
+		this.description = description;
+	
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public int getOrderId() {

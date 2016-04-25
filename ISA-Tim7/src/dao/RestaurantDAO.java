@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import beans.City;
+import beans.Employee;
+import beans.Product;
 import beans.Restaurant;
 
 public class RestaurantDAO {
@@ -73,5 +75,112 @@ public class RestaurantDAO {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public static boolean productExists(String name, String id_res) {
+			boolean response=false;
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+				PreparedStatement ps = connect.prepareStatement("select * from PRODUCT where NAME=? and RESTAURANT_ID_RES=?");
+				ps.setString(1, name);
+				ps.setString(2, id_res);
+				ResultSet result = ps.executeQuery();
+				if(result.next())
+					response = true;
+				else
+					response = false;
+				
+				result.close();
+				ps.close();
+				connect.close();
+				
+			} catch (Exception e) {
+			
+				e.printStackTrace();
+			}
+			
+			return response;
+		
+	}
+
+	public static void addProduct(String name, String type, String description, 
+			String price, int id_res) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("insert into PRODUCT (NAME, TYPE, DESCRIPTION, PRICE, RESTAURANT_ID_RES) values(?, ?, ?, ?, ?)");
+			ps.setString(1, name);
+			ps.setString(2, type);
+			ps.setString(3, description);
+			ps.setString(4, price);
+			ps.setInt(5, id_res);
+			ps.executeUpdate();
+			ps.close();
+			connect.close();
+			
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		}
+	}
+
+	public static ArrayList<Product> getFood(String id_res) {
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select NAME,"
+					+ "PRICE, DESCRIPTION from PRODUCT where RESTAURANT_ID_RES=? and TYPE=?");
+			ps.setString(1, id_res);
+			ps.setString(2, "FOOD");
+			ResultSet result = ps.executeQuery();
+			ArrayList<Product> products = new ArrayList<Product>();
+			while(result.next()){
+				
+				products.add(new Product("FOOD",
+						Double.parseDouble(result.getString(2)),result.getString(1),
+						result.getString(3)));
+			}
+			
+			result.close();
+			ps.close();
+			connect.close(); 
+			return products;
+			
+		}catch(Exception e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static ArrayList<Product> getBeverage(String id_res) {
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select NAME,"
+					+ "PRICE, DESCRIPTION from PRODUCT where RESTAURANT_ID_RES=? and TYPE=?");
+			ps.setString(1, id_res);
+			ps.setString(2, "BEVERAGE");
+			ResultSet result = ps.executeQuery();
+			ArrayList<Product> products = new ArrayList<Product>();
+			while(result.next()){
+				
+				products.add(new Product("BEVERAGE",
+						Double.parseDouble(result.getString(2)),result.getString(1),
+						result.getString(3)));
+			}
+			
+			result.close();
+			ps.close();
+			connect.close(); 
+			return products;
+			
+		}catch(Exception e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

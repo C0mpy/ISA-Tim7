@@ -20,6 +20,7 @@
 	<script src='fullcalendar-2.6.1/lib/jquery-ui.custom.min.js'></script>
 	<script src='fullcalendar-2.6.1/fullcalendar.min.js'></script>
 	
+	
 	<style>
 	
 	canvas {
@@ -135,6 +136,15 @@
    		height: 100%!important; width: 100%;
 	}​
 
+	.table {
+    	border-bottom:0px !important;
+	}
+	.table th, .table td {
+    	border: 1px !important;
+	}
+	.fixed-table-container {
+    	border:0px !important;
+	}
   </style>
 </head>
 <body>
@@ -148,7 +158,7 @@
 			    <ul class="nav nav-pills nav-stacked">
 				    <li class="active"><a href="#home" ><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a></li>
 				    <li><a href="#employees" onclick = "getEmployees()" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Employees</a></li>
-				    <li><a href="#restaurant" data-toggle="tab"><span class="glyphicon glyphicon-cutlery"></span>&nbsp;&nbsp;Restaurant</a></li>
+				    <li><a href="#restaurant" onclick = "printFood()" data-toggle="tab"><span class="glyphicon glyphicon-cutlery"></span>&nbsp;&nbsp;Restaurant</a></li>
 				    <li><a href="#suppliers"><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;&nbsp;Suppliers</a></li>
 				    <li><a href="#report"><span class="glyphicon glyphicon-stats"></span>&nbsp;&nbsp;Report</a></li>
 			    </ul><br>
@@ -182,8 +192,22 @@
 		    						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyName">Modify Name</button>
 		  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyDesc">Modify Description</button>
 		  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#modifyPlan" onclick="setCanvas()">Restaurant Plan</button>
+		  							<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#addProductModal">Add Product</button>
 		  						</div>
+		  						
 		  						<hr>
+		  						<br>
+		  						<br>
+		  						<div class="col-xs-8">
+		  						</div>
+		  						<div class="col-xs-4">
+		  							<select class="form-control" id="menu">
+	        							<option onclick="printFood()">FOOD</option>
+	        							<option onclick="printBeverage()">BEVERAGE</option>
+	        					</select>
+		  						</div>
+		  						<br><br><br><br><br><br>
+		  						<div class="row"><table class="table" id="productTable"></table></div>
 							</div>
 			      		</div>
 					</div>
@@ -197,7 +221,7 @@
   		<p>Footer Text</p>
 	</footer>
 	
-	<!-- Modal -->
+	<!-- Modal za dodavanje zaposlenog-->
 	<div id="addEmplModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 	    	<!-- Modal content-->
@@ -338,6 +362,57 @@
 	      		</div>
 		      	<div class="modal-footer">
 		      		<button type="button" class="btn btn-primary" onclick="addEmployee()">Add</button>
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+	   	 	</div>
+		</div>
+	</div>
+	
+	<!-- Modal za dodavanje jela-->
+	<div id="addProductModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Add Product</h4>
+	      		</div>
+	      		<div class="modal-body">
+	        		<table class="table table-hover">
+	        			
+	        			<tr>
+	        				<td><label for="productType">Select Type:</label></td>
+	        				<td><select class="form-control" id="productType">
+	        					<option>FOOD</option>
+	        					<option>BEVERAGE</option>
+	        					</select>
+	        				</td>
+	        			</tr>
+	        			
+	        			<tr>
+	        				<td><label for="productName">Name:</label></td>
+	        				<td><input type="text" class="form-control" id="productName"></td>
+	        			</tr>
+	        			  
+	        			<tr>
+	        				<td><label for="productDescription">Description:</label></td>
+	        				<td><textarea rows="7" class="form-control" id="productDescription"></textarea></td>
+	        			</tr>
+	        			
+	        			<tr>
+	        				<td><label for="productPrice">Price:</label></td>
+	        				<td><input type="text" class="form-control" id="productPrice"></td>
+	  						<td><span class="glyphicon glyphicon-euro " style="font-size:32px"></span></td>
+	        				
+	        			</tr>
+	        			
+	        			
+	        		</table>
+	        		<font color="red" id="productError"></font> 
+	        		
+	      		</div>
+		      	<div class="modal-footer">
+		      		<button type="button" class="btn btn-primary" onclick="addProduct()">Add</button>
 		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		      	</div>
 	   	 	</div>
