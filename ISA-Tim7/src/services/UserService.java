@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
@@ -21,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.json.simple.JSONObject;
 
+import beans.Friend;
 import beans.User;
 import dao.UserDAO;
 
@@ -121,6 +123,18 @@ public class UserService {
 			return "ok";
 		else
 			return "not_ok";
+	}
+	
+	@POST
+	@Path("/searchPeople")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public  ArrayList<Friend> search(JSONObject data){
+		ArrayList<Friend> result= new ArrayList<Friend>();
+		
+		result = UserDAO.search((String) data.get("name"),(String) data.get("sender"));
+		
+		return result;
 	}
 	
 	private void sendActivationToken(String email,String token){

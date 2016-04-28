@@ -1,4 +1,7 @@
 $(window).load(function(){
+	if(sessionStorage.userType!="GUEST"){
+		window.location.href="index.html";
+	}
 	if(sessionStorage.activated=="false"){
 		$('#acc_code').modal('show');
 	
@@ -6,6 +9,7 @@ $(window).load(function(){
 		 $(".profile-usertitle-name").append(sessionStorage.firstName+" "+sessionStorage.lastName)
 	 }
     });
+
 
 function activate(){
 	alert(sessionStorage.email);
@@ -130,15 +134,162 @@ function changePassword(){
 
 
 function search_restaurants(){
+	var query = $("#rsearch").val();
+	query.toLowerCase();
 	
-}
-
-function search_people(){
 	$.ajax({
-		url: "../ISA-Tim7/rest/Users/search",
-		//todo
-		
+		url: "../ISA-Tim7/rest/user/searchRestaurants",
+		type : "post",
+		data: JSON.stringify({
+			//todo
+			}),
+		contentType : "application/json",
+		dataType:"json",
+		success:function(data){
+			alert(JSON.stringify(data));
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
 		
 		
 	});
+}
+
+function searchPeople(){
+	var query = $("#psearch").val();
+	query.toLowerCase();
+	if(query.indexOf(";") > -1){
+		alert("ne moz to");
+	}else{
+	
+		$.ajax({
+			url: "../ISA-Tim7/rest/user/searchPeople",
+			type : "post",
+			data: JSON.stringify({
+				"name":query,
+				"sender":sessionStorage.email
+				}),
+			contentType : "application/json",
+			dataType:"json",
+			success:function(data){
+				alert(JSON.stringify(data));
+				$("#psearchresult").empty();
+				var table=$("<table></table>");
+				
+				$.each(data,function(index,obj){
+					if(obj.email!=sessionStorage.email){
+						var tr=$("<tr  ></tr>");
+						
+						tr.append("<td>"+obj.firstName+" "+obj.lastName+"</td>");
+						tr.append("<td>"+obj.email+"</td>");
+						if(obj.status1=="nista")
+						tr.append("<td><input type=button value='ADD FRIEND' " +
+								"onclick=\"addFriend('"+obj.email+"')\"></td>");
+						if(obj.status1=="true")
+							tr.append("<td><input  value='FRIEND'></td>");
+						else
+							tr.append("<td><input  value='PENDING'></td>");
+						tr.append("<td><hr></td>");
+						table.append(tr);
+					}
+				});
+				$("#psearchresult").append(table);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+		    	alert("AJAX ERRORcina");	
+			}
+			
+			
+		});
+	}
+}
+
+function addFriend(email){
+	
+	
+	
+	$.ajax({
+		url: "../ISA-Tim7/rest/friends/addFriend",
+		type : "post",
+		data: JSON.stringify({
+			 "friend1":sessionStorage.email,
+			 "friend2":email
+			}),
+		contentType : "application/json",
+		dataType:"text",
+		success:function(data){
+			alert(data);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
+	});
+}
+
+function getMyFriends(){
+	
+	
+	$.ajax({
+		url: "../ISA-Tim7/rest/friends/getMyFriends",
+		type : "post",
+		data: JSON.stringify({
+			 "user":sessionStorage.email,
+			 "order":$("input[name=optradio]:checked").val()
+			}),
+		contentType : "application/json",
+		dataType:"json",
+		success:function(data){
+			
+			$("#fsearchresult").empty();
+			var table=$("<table></table>");
+			
+			$.each(data,function(index,obj){
+				if(obj.email!=sessionStorage.email){
+					var tr=$("<tr  ></tr>");
+					
+					tr.append("<td>"+obj.firstName+" "+obj.lastName+"</td>");
+					tr.append("<td>"+obj.email+"</td>");
+					if(obj.status){
+					tr.append("<td><input type=button value='DELETE' onclick=\"deleteFriend('"+obj.email+"')\"></td>");
+					}else{
+						tr.append("<td><input value='pending'> </td>")
+					}
+					tr.append("<td><hr></td>");
+					table.append(tr);
+				}
+			});
+			$("#fsearchresult").append(table);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
+	})
+	
+}
+
+function deleteFriend(email){
+	$.ajax({
+		url: "../ISA-Tim7/rest/friends/deleteFriend",
+		type : "post",
+		data: JSON.stringify({
+			 "user":sessionStorage.email,
+			 "friend":email
+			}),
+		contentType : "application/json",
+		dataType:"text",
+		success:function(data){
+			alert(data);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
+	})
+	
+}
+
+
+function logout(){
+	sessionStorage.clear()
+	window.location.href="index.html";
 }

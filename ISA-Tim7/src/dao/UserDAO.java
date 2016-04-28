@@ -4,10 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Random;
+import java.util.ArrayList;
 
 import beans.Bartender;
 import beans.Cook;
+import beans.Friend;
 import beans.Guest;
 import beans.RestaurantManager;
 import beans.Supplier;
@@ -141,7 +142,7 @@ public static void addGuest(String email, String name, String lName, String pass
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
-			PreparedStatement ps = connect.prepareStatement("insert into USER (EMAIL, F_NAME, L_NAME, PASS, TYPE) values(?, ?, ?, ?, ?)");
+			PreparedStatement ps = connect.prepareStatement("insert like into USER (EMAIL, F_NAME, L_NAME, PASS, TYPE) values(?, ?, ?, ?, ?)");
 			ps.setString(1, email);
 			ps.setString(2, name);
 			ps.setString(3, lName);
@@ -293,7 +294,7 @@ public static void addGuest(String email, String name, String lName, String pass
 			ResultSet rs=ps.executeQuery();
 			if(rs.next()){
 				if(!rs.getString(1).equals(oldp)){
-					System.out.println(rs.getString(1)+oldp);
+					
 					return ret;
 				}
 			}
@@ -313,6 +314,57 @@ public static void addGuest(String email, String name, String lName, String pass
 		}
 		
 		return ret;
+	}
+	
+	public static ArrayList<Friend> search(String query,String sender){
+		ArrayList<Friend> result=new ArrayList<Friend>();
+		String upit="";
+		if(query.equals("")){
+			upit="USER.F_NAME like '%%'";
+		}else{
+			String tokens[] = query.split(" ");
+			
+			for(String t: tokens){
+				upit+="or LOWER(USER.F_NAME) like '%"+t+"%' or LOWER(USER.L_NAME) like '%"+t+"%'";
+			}
+			upit=upit.substring(2);
+		}
+	
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			
+			PreparedStatement ps=connect.prepareStatement("SELECT USER.F_NAME , USER.L_NAME , USER.EMAIL FROM USER"
+					+ " inner join GUEST on USER.EMAIL=GUEST.USER_EMAIL "
+					+ " WHERE GUEST.ACTIVATED=1 and ("+upit+") ;");
+			
+			ArrayList<Friend> friends=FriendDAO.getMyFriends(sender,"USER.F_NAME");
+			
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				
+					boolean is_friend=false;
+					boolean status=false;
+					for(Friend f : friends)
+						if(f.getEmail().equals(rs.getString(3))){
+							is_friend=true;
+							status=f.getStatus();
+						}
+					if(is_friend)
+						result.add(new Friend(rs.getString(3),rs.getString(1),rs.getString(2),String.valueOf(status)));
+					else
+						result.add(new Friend(rs.getString(3),rs.getString(1),rs.getString(2),"nista"));
+				
+			}
+			rs.close();
+			ps.close();
+			
+			connect.close();
+	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }
