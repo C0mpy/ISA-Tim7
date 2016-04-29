@@ -38,4 +38,15 @@ public class OrderService {
 		return OrderDAO.getOpen((String)data.get("rest"), product);
 		
 	}
+	
+	@POST
+	@Path("/getOrderForTable")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Product> getOrderForTable(JSONObject data) {
+		
+		return OrderDAO.getOpenForTable((String)data.get("table_id"), 
+				(String)data.get("rest_id"));
+		
+	}
 }
