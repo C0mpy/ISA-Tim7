@@ -7,6 +7,7 @@ public class Restaurant {
 	String description;
 	String address;
 	String zip;
+	String city;
 	
 	public Restaurant(String id, String name, String description, String address, String zip) {
 		super();
@@ -15,6 +16,15 @@ public class Restaurant {
 		this.description = description;
 		this.address = address;
 		this.zip = zip;
+	}
+	
+	public Restaurant(String id, String name, String description, String address,String zip, String city) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.address = address;
+		this.city = city;
 	}
 
 	public String getId() {

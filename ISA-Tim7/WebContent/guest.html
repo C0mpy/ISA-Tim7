@@ -105,6 +105,7 @@
 	    		<h4><small>PEOPLE</small></h4><br>
 				<a href="#search" data-toggle="tab">Search</a>
 				<a href="#friends" data-toggle="tab" onclick="getMyFriends()">Friends</a>
+				<hr>
 				<div class="tab-content">
 					<div class="tab-pane " id="search"  >
 					<input type="text" class="form-control" id="psearch">
@@ -129,6 +130,7 @@
 							      <input type="radio" value="USER.EMAIL" name="optradio" onclick="getMyFriends()"> Email
 							    </label>
 							  </form>
+							  <hr>
 					<div id="fsearchresult"></div>
 					</div>
 				
@@ -143,7 +145,17 @@
 	    		<h4><small>RESTAURANTS</small></h4><br>
 				
 					<input type="text" class="form-control" id="rsearch">
-					<input type="button" value="Search" onclick="searchRestaurants()">
+					<select class="form-control" id="resCity"></select>
+					<input type="button" value="Search" onclick="search_restaurants()">
+					<hr>
+					<form role="form">
+					Order by: 	
+							    <label class="radio-inline">
+							    <input type="radio" value="" name="roptradio" onclick="" checked >  Name 
+							    </label>
+							    
+							    
+							  </form>
 					<hr>
 					<div id="psearchresult">
 					

@@ -13,12 +13,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.json.simple.JSONObject;
 
-import beans.Employee;
 import beans.Product;
 import beans.Restaurant;
-import dao.EmployeeDAO;
 import dao.RestaurantDAO;
-import dao.UserDAO;
 
 @Path("/restaurant")
 @Singleton
@@ -38,6 +35,16 @@ public class RestaurantService {
 				(String)data.get("address"), zip);
 	}
 	
+	@POST
+	@Path("/searchRestaurants")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Restaurant> search(JSONObject data) {
+
+		String zip = (((String) data.get("city")).split(" ")[0]);
+		
+		return RestaurantDAO.search((String)data.get("query"), zip);
+	}
 	@POST
 	@Path("/getAll")
 	@Consumes(MediaType.APPLICATION_JSON)

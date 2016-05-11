@@ -6,10 +6,50 @@ $(window).load(function(){
 		$('#acc_code').modal('show');
 	
 	 }else{
-		 $(".profile-usertitle-name").append(sessionStorage.firstName+" "+sessionStorage.lastName)
+		 $(".profile-usertitle-name").append(sessionStorage.firstName+" "+sessionStorage.lastName);
+		 loadCities();
+		 $("#restaurants").show();
 	 }
     });
 
+function loadCities() {
+	
+	$('#resCity').empty();
+	$('#resCity')
+		.append($("<option></option>")
+		.attr("value", -1)
+		.text("All")); 
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/city/getAll",
+	   	type : "Post",
+	   	data : JSON.stringify({
+			"bez" : "parametara"
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+	   	success : function(data) {
+	   		
+	   		list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+	   		
+	   		if (list.length !=0) {
+	   			
+			   	$.each(list, function(index, obj) {	   		
+			   			
+			   		$('#resCity')
+			   		.append($("<option></option>")
+			   		.attr("value", index)
+			   		.text(obj.zip + " " + obj.name)); 
+		   		});
+		   
+		   	}
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERROR");
+	    }
+	    			
+	});
+	
+};
 
 function activate(){
 	alert(sessionStorage.email);
@@ -135,13 +175,15 @@ function changePassword(){
 
 function search_restaurants(){
 	var query = $("#rsearch").val();
+	
 	query.toLowerCase();
 	
 	$.ajax({
-		url: "../ISA-Tim7/rest/user/searchRestaurants",
+		url: "../ISA-Tim7/rest/restaurant/searchRestaurants",
 		type : "post",
 		data: JSON.stringify({
-			//todo
+			"query":query,
+			"city" : $( "#resCity option:selected" ).text()
 			}),
 		contentType : "application/json",
 		dataType:"json",
@@ -186,7 +228,7 @@ function searchPeople(){
 						if(obj.status1=="nista")
 						tr.append("<td><input type=button value='ADD FRIEND' " +
 								"onclick=\"addFriend('"+obj.email+"')\"></td>");
-						if(obj.status1=="true")
+						else if(obj.status1=="true")
 							tr.append("<td><input  value='FRIEND'></td>");
 						else
 							tr.append("<td><input  value='PENDING'></td>");
