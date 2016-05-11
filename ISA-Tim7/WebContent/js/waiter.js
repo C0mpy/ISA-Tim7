@@ -1,5 +1,8 @@
 $(document).ready(function() {
-
+	
+	$("#name").text(sessionStorage.firstName + " " + sessionStorage.lastName);
+	$("#email").text(sessionStorage.email);
+	$("#birth").text(sessionStorage.dateOfBirth);
 	$("#calendar").fullCalendar({
 	});
 
@@ -12,6 +15,7 @@ $(document).ready(function() {
 	})
 	
 	fillEvents();
+	loadCanvas();
 });
 
 function fillEvents() {
@@ -93,4 +97,81 @@ function saveChanges() {
 	    	alert("Ajax error");
 	    }
 	});	   	
+}
+
+function loadCanvas() {
+	
+	var canvas = new fabric.Canvas('canvas', {backgroundColor : "rgb(230, 230, 230)"});
+	fabric.Object.prototype.selectable = false;
+	
+	canvas.on('mouse:up', function(e) {
+		
+		var activeObject = e.target;
+		$.ajax ({
+		   	url : "../ISA-Tim7/rest/order/getOrderForTable",
+		   	type : "Post",
+		   	data : JSON.stringify({
+				"table_id": activeObject.get('id'),
+				"rest_id": sessionStorage.restaurantId
+			}),
+		   	contentType : 'application/json',
+			dataType : 'json',
+		   	success : function(data) {
+		   		$("#order").empty();
+		   		$("#order")
+		   	    .append($('<li>')
+		   	    	.addClass("list-group-item")
+		   	    	.addClass("list-group-item-warning")
+		   	        .append($('<h3>')
+		   	            .text("Orders:")
+		   	        )
+		 
+		   	    )
+		   		list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+			   	$.each(list, function(index, obj) {
+			   		$("#order")
+			   	    .append($('<li>')
+			   	    	.addClass("list-group-item")
+			   	    	.addClass("list-group-item-warning")
+			   	        .append($('<p>')
+			   	            .text(obj.name + " : " + obj.price + " din ")
+			   	        )
+			 
+			   	    )
+
+			   	});
+		   		
+		   	},
+		    error : function(XMLHttpRequest, textStatus, errorThrown) {
+		    	alert("Ajax error");
+		    },
+		   	
+		});	
+	});
+	
+	$("#canvWrap").css({"border-color": "#C1E0FF", 
+        "border-weight":"1px", 
+        "border-style":"solid"});
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/getPlan",
+	   	type : "Post",
+	   	data : JSON.stringify({
+			"id_res": sessionStorage.restaurantId
+		}),
+	   	contentType : 'application/json',
+		dataType : 'text',
+	   	success : function(data) {
+	   		canvas.loadFromJSON(data, canvas.renderAll.bind(canvas));
+	   		
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("Ajax error");
+	    },
+	   	
+	});	
+	
+	canvas.setWidth($("#wrap").width());
+	canvas.setHeight($("#profile").height());
+
 }

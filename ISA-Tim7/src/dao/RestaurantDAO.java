@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+
 import beans.City;
 import beans.Employee;
 import beans.Friend;
@@ -185,6 +186,7 @@ public class RestaurantDAO {
 		return null;
 	}
 	
+
 	public static ArrayList<Restaurant> search(String query,String zip){
 		ArrayList<Restaurant> result=new ArrayList<Restaurant>();
 		String upit="";
@@ -233,4 +235,27 @@ public class RestaurantDAO {
 		return result;
 	}
 	
+
+	public static String getPlan(String id_res) {
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select PLAN_RES from PLAN where ID_RES=?");
+			ps.setString(1, id_res);
+			ResultSet result = ps.executeQuery();
+			String plan = "";
+			if(result.next()) {
+				plan = result.getString(1);
+			}
+			ps.close();
+			connect.close();
+			return plan;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
