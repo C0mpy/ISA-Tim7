@@ -274,8 +274,8 @@ function printFood(){
 			   					"<td>"+obj.description+"</td>"+
 			   					"</tr>" +
 			   					"<tr>" +
-			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyFood()\">Modify</button>" +
-			   					"&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"deleteFood()\">Delete</button></td>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.orderId+"')\">Modify</button>" +
+			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.orderId+"')\">Delete</button></td>" +
 			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
 			   					"</tbody>")
 		   		});
@@ -393,8 +393,8 @@ function printBeverage(){
 			   					"<td>"+obj.description+"</td>"+
 			   					"</tr>" +
 			   					"<tr>" +
-			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyFood()\">Modify</button>" +
-			   					"&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"deleteFood()\">Delete</button></td>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.orderId+"')\">Modify</button>" +
+			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.orderId+"')\">Delete</button></td>" +
 			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
 			   					"</tbody>")
 		   		});
@@ -409,6 +409,48 @@ function printBeverage(){
 	
 	
 }
+
+function deleteProduct(s){
+	
+	bootbox.confirm("Are you sure you want to delete a product?", function(result) {
+		  	if(result){
+		  		
+		  		$.ajax ({
+		  		   	url : "../ISA-Tim7/rest/restaurant/deleteProd",
+		  		   	type : "Post",
+		  		   	data : JSON.stringify({
+		  				"id_res": sessionStorage.restaurantId,
+		  				"id_product": s
+		  			}),
+		  		   	contentType : 'application/json',
+		  			dataType : 'json',
+		  		   	success : function(data) {
+		  		   		bootbox.alert("Product has successfully deleted");
+		  		   		
+		  		   		
+		  		   			
+		  		   	},
+		  		    error : function(XMLHttpRequest, textStatus, errorThrown) {
+		  		    	alert("Ajax error");
+		  		    },
+		  		   	
+		  		});	
+		  		
+		  		
+		  	}
+		  	
+		  	
+			
+		}); 
+}
+
+
+
+function modifyProduct(s){
+	
+	alert(s);
+}
+
 function addProduct() {
 	
 	$.ajax ({

@@ -85,6 +85,15 @@ public class RestaurantService {
 	}
 	
 	@POST
+	@Path("/deleteProd")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void deleteProd(JSONObject data) {
+		
+		RestaurantDAO.deleteProduct((String)data.get("id_res"), (String)data.get("id_product"));
+	}
+	
+	@POST
 	@Path("/getPlan")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

@@ -18,8 +18,9 @@ public class Product {
 		this.idRestaurant = idRestaurant;
 	}
 	
-	public Product(String type, double price, String name, String description) {
+	public Product(int id, String type, double price, String name, String description) {
 		
+		this.orderId = id;
 		this.type = type;
 		this.price = price;
 		this.name = name;

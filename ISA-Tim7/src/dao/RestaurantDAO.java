@@ -133,14 +133,15 @@ public class RestaurantDAO {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("select NAME,"
-					+ "PRICE, DESCRIPTION from PRODUCT where RESTAURANT_ID_RES=? and TYPE=?");
+					+ "PRICE, DESCRIPTION,ID_PRODUCT from PRODUCT "
+					+ "where RESTAURANT_ID_RES=? and TYPE=?");
 			ps.setString(1, id_res);
 			ps.setString(2, "FOOD");
 			ResultSet result = ps.executeQuery();
 			ArrayList<Product> products = new ArrayList<Product>();
 			while(result.next()){
 				
-				products.add(new Product("FOOD",
+				products.add(new Product(Integer.parseInt(result.getString(4)),"FOOD",
 						Double.parseDouble(result.getString(2)),result.getString(1),
 						result.getString(3)));
 			}
@@ -162,14 +163,15 @@ public class RestaurantDAO {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
 			PreparedStatement ps = connect.prepareStatement("select NAME,"
-					+ "PRICE, DESCRIPTION from PRODUCT where RESTAURANT_ID_RES=? and TYPE=?");
+					+ "PRICE, DESCRIPTION, ID_PRODUCT from PRODUCT "
+					+ "where RESTAURANT_ID_RES=? and TYPE=?");
 			ps.setString(1, id_res);
 			ps.setString(2, "BEVERAGE");
 			ResultSet result = ps.executeQuery();
 			ArrayList<Product> products = new ArrayList<Product>();
 			while(result.next()){
 				
-				products.add(new Product("BEVERAGE",
+				products.add(new Product(Integer.parseInt(result.getString(4)),"BEVERAGE",
 						Double.parseDouble(result.getString(2)),result.getString(1),
 						result.getString(3)));
 			}
@@ -314,6 +316,27 @@ public class RestaurantDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void deleteProduct(String id_res, String id_product) {
+		
+try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("delete from PRODUCT where RESTAURANT_ID_RES=? and ID_PRODUCT=?");
+			ps.setString(1, id_res);
+			ps.setString(2, id_product);
+			ps.executeUpdate();
+			
+			ps.close();
+			connect.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
