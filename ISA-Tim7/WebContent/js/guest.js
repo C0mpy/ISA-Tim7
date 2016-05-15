@@ -1,11 +1,55 @@
 $(window).load(function(){
+	if(sessionStorage.userType!="GUEST"){
+		window.location.href="index.html";
+	}
 	if(sessionStorage.activated=="false"){
 		$('#acc_code').modal('show');
 	
 	 }else{
-		 $(".profile-usertitle-name").append(sessionStorage.firstName+" "+sessionStorage.lastName)
+		 $(".profile-usertitle-name").append(sessionStorage.firstName+" "+sessionStorage.lastName);
+		 loadCities();
+		 $("#restaurants").show();
 	 }
     });
+
+function loadCities() {
+	
+	$('#resCity').empty();
+	$('#resCity')
+		.append($("<option></option>")
+		.attr("value", -1)
+		.text("All")); 
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/city/getAll",
+	   	type : "Post",
+	   	data : JSON.stringify({
+			"bez" : "parametara"
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+	   	success : function(data) {
+	   		
+	   		list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+	   		
+	   		if (list.length !=0) {
+	   			
+			   	$.each(list, function(index, obj) {	   		
+			   			
+			   		$('#resCity')
+			   		.append($("<option></option>")
+			   		.attr("value", index)
+			   		.text(obj.zip + " " + obj.name)); 
+		   		});
+		   
+		   	}
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERROR");
+	    }
+	    			
+	});
+	
+};
 
 function activate(){
 	alert(sessionStorage.email);
@@ -130,15 +174,164 @@ function changePassword(){
 
 
 function search_restaurants(){
+	var query = $("#rsearch").val();
 	
-}
-
-function search_people(){
+	query.toLowerCase();
+	
 	$.ajax({
-		url: "../ISA-Tim7/rest/Users/search",
-		//todo
-		
+		url: "../ISA-Tim7/rest/restaurant/searchRestaurants",
+		type : "post",
+		data: JSON.stringify({
+			"query":query,
+			"city" : $( "#resCity option:selected" ).text()
+			}),
+		contentType : "application/json",
+		dataType:"json",
+		success:function(data){
+			alert(JSON.stringify(data));
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
 		
 		
 	});
+}
+
+function searchPeople(){
+	var query = $("#psearch").val();
+	query.toLowerCase();
+	if(query.indexOf(";") > -1){
+		alert("ne moz to");
+	}else{
+	
+		$.ajax({
+			url: "../ISA-Tim7/rest/user/searchPeople",
+			type : "post",
+			data: JSON.stringify({
+				"name":query,
+				"sender":sessionStorage.email
+				}),
+			contentType : "application/json",
+			dataType:"json",
+			success:function(data){
+				alert(JSON.stringify(data));
+				$("#psearchresult").empty();
+				var table=$("<table></table>");
+				
+				$.each(data,function(index,obj){
+					if(obj.email!=sessionStorage.email){
+						var tr=$("<tr  ></tr>");
+						
+						tr.append("<td>"+obj.firstName+" "+obj.lastName+"</td>");
+						tr.append("<td>"+obj.email+"</td>");
+						if(obj.status1=="nista")
+						tr.append("<td><input type=button value='ADD FRIEND' " +
+								"onclick=\"addFriend('"+obj.email+"')\"></td>");
+						else if(obj.status1=="true")
+							tr.append("<td><input  value='FRIEND'></td>");
+						else
+							tr.append("<td><input  value='PENDING'></td>");
+						tr.append("<td><hr></td>");
+						table.append(tr);
+					}
+				});
+				$("#psearchresult").append(table);
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+		    	alert("AJAX ERRORcina");	
+			}
+			
+			
+		});
+	}
+}
+
+function addFriend(email){
+	
+	
+	
+	$.ajax({
+		url: "../ISA-Tim7/rest/friends/addFriend",
+		type : "post",
+		data: JSON.stringify({
+			 "friend1":sessionStorage.email,
+			 "friend2":email
+			}),
+		contentType : "application/json",
+		dataType:"text",
+		success:function(data){
+			alert(data);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
+	});
+}
+
+function getMyFriends(){
+	
+	
+	$.ajax({
+		url: "../ISA-Tim7/rest/friends/getMyFriends",
+		type : "post",
+		data: JSON.stringify({
+			 "user":sessionStorage.email,
+			 "order":$("input[name=optradio]:checked").val()
+			}),
+		contentType : "application/json",
+		dataType:"json",
+		success:function(data){
+			
+			$("#fsearchresult").empty();
+			var table=$("<table></table>");
+			
+			$.each(data,function(index,obj){
+				if(obj.email!=sessionStorage.email){
+					var tr=$("<tr  ></tr>");
+					
+					tr.append("<td>"+obj.firstName+" "+obj.lastName+"</td>");
+					tr.append("<td>"+obj.email+"</td>");
+					if(obj.status){
+					tr.append("<td><input type=button value='DELETE' onclick=\"deleteFriend('"+obj.email+"')\"></td>");
+					}else{
+						tr.append("<td><input value='pending'> </td>")
+					}
+					tr.append("<td><hr></td>");
+					table.append(tr);
+				}
+			});
+			$("#fsearchresult").append(table);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
+	})
+	
+}
+
+function deleteFriend(email){
+	$.ajax({
+		url: "../ISA-Tim7/rest/friends/deleteFriend",
+		type : "post",
+		data: JSON.stringify({
+			 "user":sessionStorage.email,
+			 "friend":email
+			}),
+		contentType : "application/json",
+		dataType:"text",
+		success:function(data){
+			alert(data);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERRORcina");	
+		}
+	})
+	
+}
+
+
+function logout(){
+	sessionStorage.clear()
+	window.location.href="index.html";
 }

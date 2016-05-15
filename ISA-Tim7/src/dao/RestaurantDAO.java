@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+
 import beans.City;
 import beans.Employee;
+import beans.Friend;
 import beans.Product;
 import beans.Restaurant;
 
@@ -183,6 +185,7 @@ public class RestaurantDAO {
 		}
 		return null;
 	}
+<<<<<<< HEAD
 
 	public static Restaurant getRestaurant(String id_res) {
 		
@@ -240,4 +243,77 @@ public class RestaurantDAO {
 			e.printStackTrace();
 		}
 	}
+	
+
+	public static ArrayList<Restaurant> search(String query,String zip){
+		ArrayList<Restaurant> result=new ArrayList<Restaurant>();
+		String upit="";
+		if(query.equals("")){
+			upit="RESTAURANT.NAME like '%%'";
+		}else{
+			String tokens[] = query.split(" ");
+			
+			for(String t: tokens){
+				upit+="or LOWER(RESTAURANT.NAME) like '%"+t+"%' ";
+			}
+			upit=upit.substring(2);
+		}
+		String zipic;
+		if(zip.equals("All")){
+			zipic="";
+		}else{
+			zipic="and CITY.ZIP="+zip;
+		}
+	
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			
+			PreparedStatement ps=connect.prepareStatement("SELECT RESTAURANT.ID_RES , RESTAURANT.NAME , RESTAURANT.DESCRIPTION , RESTAURANT.ADDRESS , CITY.NAME"
+					+ " FROM RESTAURANT INNER JOIN CITY ON RESTAURANT.CITY_ZIP=CITY.ZIP "
+					+ "WHERE ("+upit+") "+zipic+";"
+					);
+			
+			
+			
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+					
+					result.add(new Restaurant(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)));
+				
+			}
+			rs.close();
+			ps.close();
+			
+			connect.close();
+	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+
+	public static String getPlan(String id_res) {
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select PLAN_RES from PLAN where ID_RES=?");
+			ps.setString(1, id_res);
+			ResultSet result = ps.executeQuery();
+			String plan = "";
+			if(result.next()) {
+				plan = result.getString(1);
+			}
+			ps.close();
+			connect.close();
+			return plan;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
