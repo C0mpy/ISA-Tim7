@@ -48,6 +48,27 @@ public class RestaurantService {
 	}
 	
 	@POST
+	@Path("/getResDetails")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Restaurant getResDetails(JSONObject data) {
+		
+		return RestaurantDAO.getRestaurant((String)data.get("id_res"));
+	}
+	
+	@POST
+	@Path("/addResDetails")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String addResDetails(JSONObject data) {
+		if(((String)data.get("name")).trim().length()==0){
+			return "Field \"Name\" must be filled!";
+		}
+		RestaurantDAO.modifyRestaurantDetails((String)data.get("id_res"), (String)data.get("name"), (String)data.get("description") );
+		return "";
+	}
+	
+	@POST
 	@Path("/plan")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

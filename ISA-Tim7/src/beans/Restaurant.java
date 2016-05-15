@@ -8,8 +8,10 @@ public class Restaurant {
 	String address;
 	String zip;
 	
+	public Restaurant(String id){
+		this.id = id;
+	}
 	public Restaurant(String id, String name, String description, String address, String zip) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;

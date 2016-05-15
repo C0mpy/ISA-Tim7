@@ -290,6 +290,66 @@ function printFood(){
 	
 }
 
+function setResDetails(){
+	document.getElementById("restName").value ="";
+	$('#resDescription').empty();
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/getResDetails",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"id_res": sessionStorage.restaurantId
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+		success : function(data) {
+	   		if(data!=""){
+	   			document.getElementById("restName").value += data.name;
+	   			$('#resDescription').html(data.description);
+	   		}
+	   			
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("Ajax error");
+	    }
+	    			
+	});
+	
+	
+}
+
+function modifyResDetails(){
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/addResDetails",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"id_res": sessionStorage.restaurantId,
+	   		"name" : $("#restName").val(),
+			"description" : $("#resDescription").val(),
+	   		
+		}),
+	   	contentType : 'application/json',
+		dataType : "text",
+		success : function(data) {
+	   		if(data!="")
+	   			$('#modifyResError').html(data);
+	   		else{
+	   			bootbox.alert("Restaurant details has successfully modified");
+	   			$('#modify').modal('toggle');
+	   		}
+	   			
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	
+	    	alert("Ajax error");
+	    }
+	    			
+	});
+	
+	
+}
+
 function printBeverage(){
 	$('#productTable').empty();
 	$.ajax ({
@@ -416,7 +476,7 @@ var canvas=null;
 
 function addCorner(){
 	 
-	 fabric.Image.fromURL('http://localhost:8081/ISA-Tim7/image/corner2.png', function(img) {
+	 fabric.Image.fromURL('../ISA-Tim7/image/corner2.png', function(img) {
 		    img.scale(0.5).set({
 		      left: 0,
 		      top: 0,
@@ -428,7 +488,7 @@ function addCorner(){
 }
 
 function addWall(){
-	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wall2.png', function(img) {
+	fabric.Image.fromURL('../ISA-Tim7/image/wall2.png', function(img) {
 	    img.scale(0.5).set({
 	      left: 0,
 	      top: 0,
@@ -439,7 +499,7 @@ function addWall(){
 	
 }
 function addTable(){
-	  fabric.Image.fromURL('http://localhost:8081/GoJs/image/table22.png', function(img) {
+	  fabric.Image.fromURL('../ISA-Tim7/image/table22.png', function(img) {
 		    img.scale(0.5).set({
 		      left: 0,
 		      top: 0,
@@ -450,7 +510,7 @@ function addTable(){
 
   }
 function addTable3(){
-	  fabric.Image.fromURL('http://localhost:8081/GoJs/image/table32.png', function(img) {
+	  fabric.Image.fromURL('../ISA-Tim7/image/table32.png', function(img) {
 		    img.scale(0.5).set({
 		      left: 0,
 		      top: 0,
@@ -462,7 +522,7 @@ function addTable3(){
   }
 
 function addTable22(){
-	  fabric.Image.fromURL('http://localhost:8081/GoJs/image/tab22.png', function(img) {
+	  fabric.Image.fromURL('../ISA-Tim7/image/tab22.png', function(img) {
 		    img.scale(0.5).set({
 		      left: 0,
 		      top: 0,
@@ -474,7 +534,7 @@ function addTable22(){
   }
 
 function addRightDoor(){
-	fabric.Image.fromURL('http://localhost:8081/GoJs/image/right_door.png', function(img) {
+	fabric.Image.fromURL('../ISA-Tim7/image/right_door.png', function(img) {
 	    img.scale(0.8).set({
 	      left: 0,
 	      top: 0,
@@ -485,7 +545,7 @@ function addRightDoor(){
 }
 
 function addLeftDoor(){
-	fabric.Image.fromURL('http://localhost:8081/GoJs/image/left_door.png', function(img) {
+	fabric.Image.fromURL('../ISA-Tim7/image/left_door.png', function(img) {
 	    img.scale(0.8).set({
 	      left: 0,
 	      top: 0,
@@ -496,7 +556,7 @@ function addLeftDoor(){
 }
 
 function addToilet(){
-	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wc1.png', function(img) {
+	fabric.Image.fromURL('../ISA-Tim7/image/wc1.png', function(img) {
 	    img.scale(0.8).set({
 	      left: 0,
 	      top: 0,
@@ -507,7 +567,7 @@ function addToilet(){
 }
 
 function addToiletSink(){
-	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wc2.png', function(img) {
+	fabric.Image.fromURL('../ISA-Tim7/image/wc2.png', function(img) {
 	    img.scale(0.8).set({
 	      left: 0,
 	      top: 0,
@@ -518,7 +578,7 @@ function addToiletSink(){
 }
 
 function addToiletLogo(){
-	fabric.Image.fromURL('http://localhost:8081/GoJs/image/wc3.png', function(img) {
+	fabric.Image.fromURL('../ISA-Tim7/image/wc3.png', function(img) {
 	    img.scale(0.8).set({
 	      left: 0,
 	      top: 0,

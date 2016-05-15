@@ -183,4 +183,61 @@ public class RestaurantDAO {
 		}
 		return null;
 	}
+
+	public static Restaurant getRestaurant(String id_res) {
+		
+		Restaurant r = null;
+		try{
+			
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select ID_RES, NAME,"
+					+ "DESCRIPTION, ADDRESS, CITY_ZIP from RESTAURANT where ID_RES=?");
+			
+			ps.setString(1, id_res);
+			
+			ResultSet result = ps.executeQuery();
+			
+			while(result.next()){
+				
+				r = new Restaurant(id_res, result.getString(2), result.getString(3),"","");
+				
+			}	
+				
+		
+			
+			result.close();
+			ps.close();
+			connect.close(); 
+			return r;
+			
+			
+		}catch(Exception e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void modifyRestaurantDetails(String id_res, String name, String description) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("update RESTAURANT set NAME=?, DESCRIPTION=? where ID_RES=?");
+			ps.setString(1, name);
+			ps.setString(2, description);
+			ps.setString(3, id_res);
+			
+			ps.executeUpdate();
+			ps.close();
+			connect.close();
+			
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		}
+	}
 }
