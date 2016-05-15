@@ -185,7 +185,7 @@ public class RestaurantDAO {
 		}
 		return null;
 	}
-<<<<<<< HEAD
+
 
 	public static Restaurant getRestaurant(String id_res) {
 		
