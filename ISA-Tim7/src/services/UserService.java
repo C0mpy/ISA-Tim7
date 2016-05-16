@@ -1,6 +1,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 
@@ -20,10 +21,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 
 import beans.Friend;
+import beans.Notification;
 import beans.User;
+import dao.OrderDAO;
 import dao.UserDAO;
 
 @Path("/user")
@@ -187,5 +191,21 @@ public class UserService {
 		String token = sb.toString();
 		
 		return token;
+	}
+	
+	@POST
+	@Path("/waiterNotificationRead")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public  Notification waiterNotificationRead(JSONObject data) throws InterruptedException{
+		
+		Notification n = null;
+		String email = (String) data.get("email");
+		while(n == null) {
+			n = OrderDAO.waiterNotificationRead(email);
+			Thread.sleep(3000);
+		}
+		
+		return n;
 	}
 }

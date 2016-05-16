@@ -21,3 +21,18 @@
 #profileData {
 	margin-bottom: 0;
 }
+
+#productsDiv {
+	height:200px; 
+	overflow:hidden; 
+	overflow-y:scroll;
+}
+
+.productTable:hover {
+	cursor:pointer;
+	background-color: #F9E166;
+}
+
+.productTable:active { 
+    background-color: black;
+}

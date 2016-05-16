@@ -162,8 +162,17 @@ public class RestaurantService {
 	@Path("/getBeverage")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<Product> geteverage(JSONObject data){
+	public ArrayList<Product> getBeverage(JSONObject data){
 		return RestaurantDAO.getBeverage((String)data.get("id_res"));
+		
+	}
+	
+	@POST
+	@Path("/getProducts")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Product> getProducts(JSONObject data){
+		return RestaurantDAO.getProducts((String)data.get("id_res"));
 		
 	}
 }

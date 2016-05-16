@@ -41,7 +41,25 @@ $(document).on('submit', '#form', function(e) {
 	   					window.location.href = "bartender.html";
 	   				}
 	   				else if(sessionStorage.employeeType == "WAITER") {
-	   					window.location.href = "waiter.html";
+	   					$.ajax ({
+	   					   	url : "../ISA-Tim7/rest/shift/getCurrent",
+	   					   	type : "Post",
+	   					   	data : JSON.stringify({
+	   							"email" : data.email
+	   						}),
+	   					   	contentType : 'application/json',
+	   						dataType : "json",
+	   					   	success : function(shift) {
+	   					   		console.log(shift);
+	   					   		if(shift != undefined) {
+		   					   		sessionStorage.shiftId = shift.id;
+			   					   	sessionStorage.shiftStart = (shift.time).split("-")[0];
+		   					   		sessionStorage.shiftEnd = (shift.time).split("-")[1];
+		   					   		sessionStorage.shiftDate = shift.date;
+	   					   		}
+	   					   		window.location.href = "waiter.html";
+	   					   	}
+	   					});
 	   				}
 	   			}
 	   			else if(sessionStorage.userType == "GUEST") {

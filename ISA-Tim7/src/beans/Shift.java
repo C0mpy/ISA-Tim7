@@ -47,4 +47,11 @@ public class Shift {
 		this.employee = employee;
 	}
 
+	@Override
+	public String toString() {
+		return "Shift [id=" + id + ", time=" + time + ", date=" + date + ", employee=" + employee + "]";
+	}
+	
+	
+
 }
