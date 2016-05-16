@@ -274,8 +274,8 @@ function printFood(){
 			   					"<td>"+obj.description+"</td>"+
 			   					"</tr>" +
 			   					"<tr>" +
-			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.orderId+"')\">Modify</button>" +
-			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.orderId+"')\">Delete</button></td>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.id+"')\">Modify</button>" +
+			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.id+"')\">Delete</button></td>" +
 			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
 			   					"</tbody>")
 		   		});
@@ -393,8 +393,8 @@ function printBeverage(){
 			   					"<td>"+obj.description+"</td>"+
 			   					"</tr>" +
 			   					"<tr>" +
-			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.orderId+"')\">Modify</button>" +
-			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.orderId+"')\">Delete</button></td>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.id+"')\">Modify</button>" +
+			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.id+"')\">Delete</button></td>" +
 			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
 			   					"</tbody>")
 		   		});
