@@ -64,6 +64,15 @@ public class RestaurantService {
 	}
 	
 	@POST
+	@Path("/getProdDetails")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Product getProdDetails(JSONObject data) {
+		
+		return RestaurantDAO.getProduct((String)data.get("id_res"),(String)data.get("id_product"));
+	}
+	
+	@POST
 	@Path("/addResDetails")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -82,6 +91,15 @@ public class RestaurantService {
 	public void plan(JSONObject data) {
 		
 		RestaurantDAO.addPlan((String)data.get("id_res"), (String)data.get("plan"));
+	}
+	
+	@POST
+	@Path("/modifyPlan")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void modifyPlan(JSONObject data) {
+		
+		RestaurantDAO.modifyPlan((String)data.get("id_res"), (String)data.get("plan"));
 	}
 	
 	@POST
@@ -124,6 +142,26 @@ public class RestaurantService {
 				(String)data.get("description"), (String)data.get("price")
 				, Integer.parseInt((String)data.get("id_res"))
 				);
+		return "";
+	}
+	
+	@POST
+	@Path("/modifyProdDetails")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String modifyProdDetails(JSONObject data) {
+		
+		if(!checkFields(data)){
+			return "Fields \"Name\" and \"Price\" must be filled!";
+		}
+		
+		if(!isValidPrice((String)data.get("price"))){
+			return "Invalid price!";
+		}
+		
+		RestaurantDAO.modifyProduct((String)data.get("name"), (String)data.get("type"), 
+				(String)data.get("description"), (String)data.get("price")
+				, (String)data.get("id_res"),(String)data.get("id_product"));
 		return "";
 	}
 

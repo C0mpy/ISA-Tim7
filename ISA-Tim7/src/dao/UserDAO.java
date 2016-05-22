@@ -54,7 +54,16 @@ public class UserDAO {
 				user = new SystemManager(email, fName, lName, password, type);
 			}
 			else if(type.equals("SUPPLIER")) {
-				user = new Supplier(email, fName, lName, password, type);
+				
+				PreparedStatement ps2 = connect.prepareStatement("select CHANGED_PASSWORD from SUPPLIER where USER_EMAIL=?");
+				ps2.setString(1, email);
+				ResultSet result2 = ps.executeQuery();
+				String changed=null;
+				if(result.next()){
+					changed = result.getString(1);
+					
+				}
+				user = new Supplier(email, fName, lName, password, type, changed);
 			}
 			else if(type.equals("GUEST")) {
 				

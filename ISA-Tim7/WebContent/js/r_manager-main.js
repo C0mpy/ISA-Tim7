@@ -3,8 +3,16 @@
  */
 
 
+
 $.getScript("js/fabric.js", function(){
 
+});
+
+
+
+$(document).on({
+    ajaxStart: function() { $("body").addClass("loading");    },
+     ajaxStop: function() { $("body").removeClass("loading"); }    
 });
 
 $(document).ready(function() {
@@ -110,7 +118,7 @@ function getEmployees(){
 				   					"</tr>" +
 				   					"<tr>" +
 				   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyEmployee()\">Modify</button>" +
-				   					"&nbsp;<button type=\"button\" class=\"btn btn-primary\" onclick=\"deleteEmployee()\">Delete</button>" +
+				   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteEmployee()\">Delete</button>" +
 				   					"&nbsp;<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#addSchedule\" onclick=\"scheduleEmployee('"+obj.email+"','"+obj.restaurantId+"')\">Schedule</button></td>" +
 				   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
 				   					"</tbody>")
@@ -130,9 +138,6 @@ var shifts = new Array();
 var currentEmail = {};
 var currentId = {};
 function scheduleEmployee(){
-	
-	
-	
 	/*
 	//Get all client events
 	var allEvents = $('#calendar').fullCalendar('clientEvents');
@@ -146,10 +151,7 @@ function scheduleEmployee(){
 	    }
 	});
 
-	
 	*/
-	
-	
 	
 	shifts=[];
 	currentEmail = arguments[0];
@@ -197,6 +199,7 @@ function saveShifts(){
 	    
 	}
 }
+
 function addEmployee() {
 	
 	$.ajax ({
@@ -231,6 +234,7 @@ function addEmployee() {
 	   	
 	});	
 };
+
 function printFood(){
 	$('#productTable').empty();
 	$.ajax ({
@@ -274,7 +278,7 @@ function printFood(){
 			   					"<td>"+obj.description+"</td>"+
 			   					"</tr>" +
 			   					"<tr>" +
-			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.orderId+"')\">Modify</button>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#modifyProd\" onclick=\"setProduct('"+obj.orderId+"')\">Modify</button>" +
 			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.orderId+"')\">Delete</button></td>" +
 			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
 			   					"</tbody>")
@@ -311,10 +315,8 @@ function setResDetails(){
 	   	},
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	alert("Ajax error");
-	    }
-	    			
+	    }		
 	});
-	
 	
 }
 
@@ -343,10 +345,8 @@ function modifyResDetails(){
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	
 	    	alert("Ajax error");
-	    }
-	    			
+	    }			
 	});
-	
 	
 }
 
@@ -393,7 +393,7 @@ function printBeverage(){
 			   					"<td>"+obj.description+"</td>"+
 			   					"</tr>" +
 			   					"<tr>" +
-			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" onclick=\"modifyProduct('"+obj.orderId+"')\">Modify</button>" +
+			   					"<td colspan=\"4\"><button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#modifyProd\"  onclick=\"setProduct('"+obj.orderId+"')\">Modify</button>" +
 			   					"&nbsp;<button type=\"button\" class=\"btn btn-danger btn-ok\" onclick=\"deleteProduct('"+obj.orderId+"')\">Delete</button></td>" +
 			   					"</tr><tr><td colspan=\"4\"><br><br><br></tr>" +
 			   					"</tbody>")
@@ -403,15 +403,12 @@ function printBeverage(){
 	   	},
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	alert("AJAX ERROR");
-	    }
-	    			
+	    } 			
 	});
-	
 	
 }
 
 function deleteProduct(s){
-	
 	bootbox.confirm("Are you sure you want to delete a product?", function(result) {
 		  	if(result){
 		  		
@@ -434,21 +431,78 @@ function deleteProduct(s){
 		  		    	alert("Ajax error");
 		  		    },
 		  		   	
-		  		});	
-		  		
-		  		
-		  	}
-		  	
-		  	
-			
-		}); 
+		  		});			
+		  	}	
+		});
+
 }
 
-
-
-function modifyProduct(s){
+var productId=null;
+function setProduct(s){
+	productId = s;
 	
-	alert(s);
+	document.getElementById("modifyName").value ="";
+	$('#modifyDescription').empty();
+	document.getElementById("modifyPrice").value ="";
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/getProdDetails",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"id_res": sessionStorage.restaurantId,
+	   		"id_product": s
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+		success : function(data) {
+	   		if(data!=""){
+	   			document.getElementById("modifyName").value = data.name;
+	   			$('#modifyDescription').html(data.description);
+	   			document.getElementById("modifyPrice").value = data.price;
+	   			
+	   			document.getElementById("modifyType").value = data.type;
+	   			document.getElementById("modifyType").data('combobox').refresh()
+	   			
+	   		}
+	   			
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("Ajax error");
+	    }   			
+	});
+		
+}
+
+function modifyProduct(){
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/modifyProdDetails",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"id_res": sessionStorage.restaurantId,
+	   		"id_product": productId,
+	   		"name" : $("#modifyName").val(),
+			"description" : $("#modifyDescription").val(),
+			"price" : $("#modifyPrice").val(),
+			"type": $("#modifyType").val()
+	   		
+		}),
+	   	contentType : 'application/json',
+		dataType : "text",
+		success : function(data) {
+	   		if(data!="")
+	   			$('#modifyProdError').html(data);
+	   		else{
+	   			bootbox.alert("Product details has successfully modified");
+	   			$('#modifyProd').modal('toggle');
+	   		}
+	   			
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	
+	    	alert("Ajax error");
+	    }
+	});
+	
 }
 
 function addProduct() {
@@ -504,174 +558,8 @@ function draggableEvents(){
 	});
 }
 
-
-
 function addShift() {
-	
 	$('#external-events')
 			   		.append("<div class='fc-event'>"+st.value+"-"+en.value+"</div>");
 	draggableEvents();
-}
-
-
-var canvas=null;
-
-function addCorner(){
-	 
-	 fabric.Image.fromURL('../ISA-Tim7/image/corner2.png', function(img) {
-		    img.scale(0.5).set({
-		      left: 0,
-		      top: 0,
-		      cornerSize:6
-		      
-		    });
-		    canvas.add(img).setActiveObject(img);
-		  });
-}
-
-function addWall(){
-	fabric.Image.fromURL('../ISA-Tim7/image/wall2.png', function(img) {
-	    img.scale(0.5).set({
-	      left: 0,
-	      top: 0,
-	      cornerSize:4    
-	    });
-	    canvas.add(img).setActiveObject(img);
-	  });
-	
-}
-function addTable(){
-	  fabric.Image.fromURL('../ISA-Tim7/image/table22.png', function(img) {
-		    img.scale(0.5).set({
-		      left: 0,
-		      top: 0,
-		      cornerSize:6
-		    });
-		    canvas.add(img).setActiveObject(img);
-		  });
-
-  }
-function addTable3(){
-	  fabric.Image.fromURL('../ISA-Tim7/image/table32.png', function(img) {
-		    img.scale(0.5).set({
-		      left: 0,
-		      top: 0,
-		      cornerSize:6
-		    });
-		    canvas.add(img).setActiveObject(img);
-		  });
-
-  }
-
-function addTable22(){
-	  fabric.Image.fromURL('../ISA-Tim7/image/tab22.png', function(img) {
-		    img.scale(0.5).set({
-		      left: 0,
-		      top: 0,
-		      cornerSize:6
-		    });
-		    canvas.add(img).setActiveObject(img);
-		  });
-
-  }
-
-function addRightDoor(){
-	fabric.Image.fromURL('../ISA-Tim7/image/right_door.png', function(img) {
-	    img.scale(0.8).set({
-	      left: 0,
-	      top: 0,
-	      cornerSize:6
-	    });
-	    canvas.add(img).setActiveObject(img);
-	  });
-}
-
-function addLeftDoor(){
-	fabric.Image.fromURL('../ISA-Tim7/image/left_door.png', function(img) {
-	    img.scale(0.8).set({
-	      left: 0,
-	      top: 0,
-	      cornerSize:6
-	    });
-	    canvas.add(img).setActiveObject(img);
-	  });
-}
-
-function addToilet(){
-	fabric.Image.fromURL('../ISA-Tim7/image/wc1.png', function(img) {
-	    img.scale(0.8).set({
-	      left: 0,
-	      top: 0,
-	      cornerSize:6
-	    });
-	    canvas.add(img).setActiveObject(img);
-	  });
-}
-
-function addToiletSink(){
-	fabric.Image.fromURL('../ISA-Tim7/image/wc2.png', function(img) {
-	    img.scale(0.8).set({
-	      left: 0,
-	      top: 0,
-	      cornerSize:6
-	    });
-	    canvas.add(img).setActiveObject(img);
-	  });
-}
-
-function addToiletLogo(){
-	fabric.Image.fromURL('../ISA-Tim7/image/wc3.png', function(img) {
-	    img.scale(0.8).set({
-	      left: 0,
-	      top: 0,
-	      cornerSize:6
-	    });
-	    canvas.add(img).setActiveObject(img);
-	  });
-}
-
-function setCanvas(){
-	
-	if(canvas==null){
-		canvas = new fabric.Canvas('c');
-	}else{
-		canvas.clear();
-	}
-	
-	fabric.Object.prototype.transparentCorners = true;
-	
-	
-}
-function savePlan(){
-	
-	var json = canvas.toJSON();
-	json = JSON.stringify(json);
-	
-	$.ajax ({
-	   	url : "../ISA-Tim7/rest/restaurant/plan",
-	   	type : "Post",
-	   	data : JSON.stringify({
-			"id_res": sessionStorage.restaurantId,
-			"plan": json
-		}),
-	   	contentType : 'application/json',
-		dataType : 'text',
-	   	success : function(data) {
-	   		bootbox.alert("Restauran plan has successfully modified");
-	   		//$('#addEmplModal').modal('toggle');
-	   		
-	   			
-	   	},
-	    error : function(XMLHttpRequest, textStatus, errorThrown) {
-	    	alert("Ajax error");
-	    },
-	   	
-	});	
-	
-}
-
-function loadPlan(){
-	
-	canvas.clear();
-	canvas.loadFromJSON(str);
 }

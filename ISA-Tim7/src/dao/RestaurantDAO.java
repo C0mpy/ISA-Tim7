@@ -65,7 +65,7 @@ public class RestaurantDAO {
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
-			PreparedStatement ps = connect.prepareStatement("insert into PLAN (PLAN_RES) value(?) ON DUPLICATE KEY UPDATE ID_RES=?");
+			PreparedStatement ps = connect.prepareStatement("insert into PLAN (PLAN_RES,ID_RES) values(?,?)");
 			ps.setString(1, plan);
 			ps.setString(2, id_res);
 			ps.executeUpdate();
@@ -320,7 +320,7 @@ public class RestaurantDAO {
 
 	public static void deleteProduct(String id_res, String id_product) {
 		
-try {
+		try {
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
@@ -334,6 +334,81 @@ try {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public static Product getProduct(String id_res, String id_product) {
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select NAME,"
+					+ "PRICE, DESCRIPTION,TYPE from PRODUCT "
+					+ "where RESTAURANT_ID_RES=? and ID_PRODUCT=?");
+			ps.setString(1, id_res);
+			ps.setString(2, id_product);
+			ResultSet result = ps.executeQuery();
+			Product pr = null;
+			while(result.next()){
+				
+				pr = new Product(Integer.parseInt(id_product),result.getString(4),
+						Double.parseDouble(result.getString(2)),result.getString(1),
+						result.getString(3));
+			}
+			
+			result.close();
+			ps.close();
+			connect.close(); 
+			return pr;
+			
+		}catch(Exception e){
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void modifyProduct(String name, String type, String description,
+			String price, String id_res, String id_product) {
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("update PRODUCT set NAME=?, TYPE=?, "
+					+ "DESCRIPTION=?, PRICE=? where RESTAURANT_ID_RES=? and ID_PRODUCT=?");
+			ps.setString(1, name);
+			ps.setString(2, type);
+			ps.setString(3, description);
+			ps.setString(4, price);
+			ps.setString(5, id_res);
+			ps.setString(6, id_product);
+			
+			ps.executeUpdate();
+			ps.close();
+			connect.close();
+			
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+		}
+		
+	}
+
+	public static void modifyPlan(String id_res, String plan) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("update PLAN set PLAN_RES=? where ID_RES=?");
+			ps.setString(1, plan);
+			ps.setString(2, id_res);
+			
+			ps.executeUpdate();
+			ps.close();
+			connect.close();
+			
+		} catch (Exception e) {
+		
 			e.printStackTrace();
 		}
 		

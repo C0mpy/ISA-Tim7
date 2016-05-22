@@ -7,6 +7,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/r_manager-main.js"></script>
+	<script type="text/javascript" src="js/canvas.js"></script>
 	
 	<link href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
 	<script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
@@ -19,6 +20,8 @@
 	
 	<script src='fullcalendar-2.6.1/lib/jquery-ui.custom.min.js'></script>
 	<script src='fullcalendar-2.6.1/fullcalendar.min.js'></script>
+	
+	<link rel='stylesheet' href='css/load.css' />
 	
 	
 	<style>
@@ -33,7 +36,7 @@
 		padding: 0 10px;
 		border: 1px solid #ccc;
 		background: #eee;
-		text-align: right;
+		text-align: left;
 	}
 
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
@@ -107,9 +110,8 @@
 		font-size: 16px;
 		margin-top: 0;
 		padding-top: 1em;
-		
 	}
-		
+	
 	#external-events .fc-event {
 		margin: 10px 0;
 		cursor: pointer;
@@ -145,10 +147,12 @@
 	.fixed-table-container {
     	border:0px !important;
 	}
+	
   </style>
 </head>
 <body>
-	
+	<div class="loadModal"><!-- Place at bottom of page --></div>    
+	        		
 	<div class="container-fluid " >
 	  	<div class="row content">
 	  	
@@ -230,7 +234,10 @@
 	        		<h4 class="modal-title">Add Employee</h4>
 	      		</div>
 	      		<div class="modal-body">
+	      				
 	        		<table class="table table-hover">
+	        			
+	        			
 	        			<tr>
 	        				<td><label for="empFirName">First Name:</label></td>
 	        				<td><input type="text" class="form-control" id="empFirName"></td>
@@ -418,6 +425,57 @@
 		</div>
 	</div>
 	
+	<!-- Modal za izmenu proizvoda-->
+	<div id="modifyProd" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Modify Product</h4>
+	      		</div>
+	      		<div class="modal-body">
+	        		<table class="table table-hover">
+	        			
+	        			<tr>
+	        				<td><label for="modifyType">Select Type:</label></td>
+	        				<td><select class="form-control" id="modifyType">
+	        					<option>FOOD</option>
+	        					<option>BEVERAGE</option>
+	        					</select>
+	        				</td>
+	        			</tr>
+	        			
+	        			<tr>
+	        				<td><label for="modifyName">Name:</label></td>
+	        				<td><input type="text" class="form-control" id="modifyName"></td>
+	        			</tr>
+	        			  
+	        			<tr>
+	        				<td><label for="modifyDescription">Description:</label></td>
+	        				<td><textarea rows="7" class="form-control" id="modifyDescription"></textarea></td>
+	        			</tr>
+	        			
+	        			<tr>
+	        				<td><label for="modifyPrice">Price:</label></td>
+	        				<td><input type="text" class="form-control" id="modifyPrice"></td>
+	  						<td><span class="glyphicon glyphicon-euro " style="font-size:32px"></span></td>
+	        				
+	        			</tr>
+	        			
+	        			
+	        		</table>
+	        		<font color="red" id="modifyProdError"></font> 
+	        		
+	      		</div>
+		      	<div class="modal-footer">
+		      		<button type="button" class="btn btn-primary" onclick="modifyProduct()">Modify</button>
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+	   	 	</div>
+		</div>
+	</div>
+	
 	<!-- Modal za izmenu detalja o restoranu-->
 	<div id="modify" class="modal fade" role="dialog">
 		<div class="modal-dialog">
@@ -453,6 +511,8 @@
 		</div>
 	</div>
 	
+	
+        
 	<div id="addSchedule" class="modal fade" role="dialog">
 		<div class="modal-dialog modal-lg">
 	    	<!-- Modal content-->
@@ -497,7 +557,7 @@
 	</div>
 	
 	
-	
+	<!-- Modal za izmenu(kreiranje) plana restorana. Dodavanje stolova,zidova... -->
 	<div id="modifyPlan" class="modal fade" role="dialog">
 		<div class="modal-dialog modal-lg">
 	    	<!-- Modal content-->
@@ -506,87 +566,86 @@
 	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
 	        		<h4 class="modal-title">Restaurant Plan</h4>
 	      		</div>
-	      		<div class="modal-body" >
+	      		<div class="modal-body">
 	
-  		
+  	<div class="loadModal"><!-- Place at bottom of page --></div>   
 	<div class="col-sm-9">
-    <canvas id="c" width="620" height="500"></canvas>
+    	<canvas id="c" width="620" height="500"></canvas>
 	</div>
 	
 	<div class="col-sm-3">
 	<div id='toolbar'>
-			<h4>Choose Element: </h4>
-			<hr>
-		
+		<hr>
+		<h4>Choose Element: </h4>
 			
-				<button type="button" class="btn btn-primary col-sm-12 text-align:left" data-toggle="collapse" data-target="#tables">
-					<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Tables</button>
-			
-				<div id="tables" class="collapse">
-					<img src='http://localhost:8081/GoJs/image/table22.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-					<button type="button" class="btn btn-primary btn-xs" onclick="addTable()">Add</button>
-			
-					<img src='http://localhost:8081/GoJs/image/table32.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-					<button type="button" class="btn btn-primary btn-xs" onclick="addTable3()">Add</button>
-					
-					<img src='http://localhost:8081/GoJs/image/table33.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-					<button type="button" class="btn btn-primary btn-xs" onclick="addTable22()">Add</button>
-						
-				</div>
-			
-			
-			<button type="button" class="btn btn-primary col-sm-12" data-toggle="collapse" data-target="#wall">
-				<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Wall</button>
-			
-			<div id="wall" class="collapse">
-				<img src='http://localhost:8081/GoJs/image/wall.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-				<button type="button" class="btn btn-primary btn-xs" onclick="addWall()">Add</button>
-			
-				<img src='http://localhost:8081/GoJs/image/corner2.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-				<button type="button" class="btn btn-primary btn-xs" onclick="addCorner()">Add</button>
-					
-			</div>
-			
-			<button type="button" class="btn btn-primary col-sm-12" data-toggle="collapse" data-target="#doors">
-				<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Doors</button>
-			
-			<div id="doors" class="collapse">
-				<img src='http://localhost:8081/GoJs/image/left_door.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-				<button type="button" class="btn btn-primary btn-xs" onclick="addLeftDoor()">Add</button>
-			
-				<img src='http://localhost:8081/GoJs/image/right_door.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-				<button type="button" class="btn btn-primary btn-xs" onclick="addRightDoor()">Add</button>
-					
-			</div>
-			
-			<button type="button" class="btn btn-primary col-sm-12" data-toggle="collapse" data-target="#toilet">
-				<span class="glyphicon glyphicon-collapse-down "></span>&nbsp;&nbsp;Toilet</button>
-			
-			<div id="toilet" class="collapse">
-				<img src='http://localhost:8081/GoJs/image/wc1.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-				<button type="button" class="btn btn-primary btn-xs" onclick="addToilet()">Add</button>
-					
-				<img src='http://localhost:8081/GoJs/image/wc2.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-				<button type="button" class="btn btn-primary btn-xs" onclick="addToiletSink()">Add</button>
+		<div class="form-group">
+			<button type="button" class="btn btn-primary btn-xs col-sm-12" data-toggle="collapse" data-target="#tables">
+				<span class="glyphicon glyphicon-collapse-down pull-left"></span>Tables</button>
+		</div>
 				
-				
-				<img src='http://localhost:8081/GoJs/image/wc3.png' class="img-thumbnail" alt="Cinque Terre" width="75" height="75">
-				<button type="button" class="btn btn-primary btn-xs" onclick="addToiletLogo()">Add</button>
+		<div id="tables" class="collapse">
+			<img src='../ISA-Tim7/image/table1.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addTable()">Add</button>
 			
+			<img src='../ISA-Tim7/image/table2.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addTable2()">Add</button>
+		</div>
+			
+		<button type="button" class="btn btn-primary btn-xs col-sm-12" data-toggle="collapse" data-target="#wall">
+			<span class="glyphicon glyphicon-collapse-down pull-left"></span>&nbsp;&nbsp;Wall</button>
+			
+		<div id="wall" class="collapse">
+			<img src='../ISA-Tim7/image/wall11.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addWall()">Add</button>
+			
+			<img src='../ISA-Tim7/image/wall22.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addWall2()">Add</button>
+		</div>
+			
+		<button type="button" class="btn btn-primary btn-xs col-sm-12" data-toggle="collapse" data-target="#doors">
+			<span class="glyphicon glyphicon-collapse-down pull-left"></span>&nbsp;&nbsp;Doors</button>
+			
+		<div id="doors" class="collapse">
+			<img src='../ISA-Tim7/image/left_door.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addLeftDoor()">Add</button>
+			
+			<img src='../ISA-Tim7/image/right_door.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addRightDoor()">Add</button>
+		</div>
+			
+		<button type="button" class="btn btn-primary btn-xs col-sm-12" data-toggle="collapse" data-target="#toilet">
+			<span class="glyphicon glyphicon-collapse-down pull-left"></span>&nbsp;&nbsp;Toilet</button>
+			
+		<div id="toilet" class="collapse">
+			<img src='../ISA-Tim7/image/wc1.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addToilet()">Add</button>
 					
-			</div>
-
+			<img src='../ISA-Tim7/image/wc2.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addToiletSink()">Add</button>
+			
+			<img src='../ISA-Tim7/image/wc3.png' class="img-thumbnail" width="50" height="50">
+			<button type="button" class="btn btn-primary btn-xs" onclick="addToiletLogo()">Add</button>
 		</div>
 		
-		
+		<div class="form-group">
+			<label>&nbsp;</label>
+			<label></label>
+		</div>	
+		<hr>
+		<button type="button" class="btn btn-primary btn-xs col-sm-12" onclick="deleteObjects()">Delete selected object(s)</button>
+			
+		<div class="form-group">
+			<label></label>
+			<label></label>
 		</div>
+	</div>
+	</div>
 		
-		<div style='clear:both'></div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" onclick="savePlan()">Save</button>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		</div>
-		
+	<div style='clear:both'></div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary" onclick="savePlan()">Save</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	</div>
 	</div>
 	
 	</div>

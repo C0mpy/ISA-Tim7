@@ -9,8 +9,11 @@ $(document).on('submit', '#form', function(e) {
 			"password" : $("#pass").val(),
 		}),
 	   	contentType : 'application/json',
+	   	async: 'true',
+	   	cache: true,
 		dataType : "json",
 	   	success : function(data) {
+	   		$(document).ready(function(){ 
 	   		
 	   		if(data != null) {
 	   			
@@ -50,13 +53,40 @@ $(document).on('submit', '#form', function(e) {
 	   			}
 	   			else if(sessionStorage.userType == "SUPPLIER") {
 	   				
+	   				$.ajax ({
+	   				   	url : "../ISA-Tim7/rest/supplier/checkPassword",
+	   				   	type : "Post",
+	   				   	data : JSON.stringify({
+	   				   		"email" : $("#email").val()
+	   					}),
+	   				   	contentType : 'application/json',
+	   					dataType : "text",
+	   					success : function(data) {
+	   						alert(data)
+	   				   		if(data!="0"){
+	   				   			sessionStorage.email = $("#email").val();
+	   				   			$("#changePassword").modal('show');
+	   				   		}
+	   				   		else if(data=="1"){
+	   				   			window.location.href = "supplier.html";
+	   				   			
+	   				   		}
+	   				   			
+	   					},
+	   				    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	   				    	
+	   				    	alert("Ajax error");
+	   				    }
+	   				    			
+	   				});
+	   				
 	   			}
 	   			
 	   		}
 	   		else {
-	   			alert("nema naloga")
+	   			alert("Log In failed!")
 	   			
-	   		}
+	   		}});
 	   	},
 	    error : function(XMLHttpRequest, textStatus, errorThrown) {
 	    	alert("AJAX ERROR");
@@ -64,3 +94,35 @@ $(document).on('submit', '#form', function(e) {
 	    			
 	});
 });
+
+function changePassword(){
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/supplier/changePassword",
+	   	type : "Post",
+	   	data : JSON.stringify({
+	   		"email": sessionStorage.restaurantId,
+	   		"new_password" : $("#newPassword").val(),
+	   		"confirm_password" : $("#confirmPassword").val()
+	   		
+		}),
+	   	contentType : 'application/json',
+		dataType : "text",
+		success : function(data) {
+			alert(data);
+	   		if(data!="")
+	   			$('#newPassError').html(data);
+	   		else{
+	   			bootbox.alert("Password has successfully modified");
+	   			$('#changePassword').modal('toggle');
+	   			window.location.href = "supplier.html";
+	   		}
+	   			
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	
+	    	alert("Ajax error");
+	    }
+	    			
+	});
+}
