@@ -26,7 +26,7 @@
 			<img src="image/default-avatar.png" width="100%">
 			<ul id="profileData" class="list-group">
 				<li class="list-group-item list-group-item-success"><h2 id="name"></h2></li>
-				<li class="list-group-item list-group-item-success"><h4 id="email"></h4></li>
+				<li class="list-group-item list-group-item-success"><table width="100%"><tr width="100%"><td><h4 id="email"></h4></td><td><button id="notificationButton" style="float: right;" type="button" class="btn btn-success" data-toggle="modal" data-target="#notificationModal"><span class="glyphicon glyphicon-comment"></span></button></td></tr></table></li>
 				<li class="list-group-item list-group-item-success"><h4 id="birth"></h4></li>
 				<li class="list-group-item list-group-item-success"><button style="display: block; width: 100%;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfile"><span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Edit Profile</button></li>
 				<li class="list-group-item list-group-item-success"><button style="display: block; width: 100%;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#shifts"><span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Show Shifts</button></li>
@@ -36,39 +36,10 @@
 			<canvas id="canvas"></canvas>
 		</div>
 		<div class="col-sm-2 sidenav">
-			<ul id="order" class="list-group">
+			<ul id="order" class="nav nav-stacked">
 				<li class="list-group-item list-group-item-warning"><h3>Orders:</h3></li>
 				<li class="list-group-item list-group-item-warning"><p>Select a table, please!</p></li>
 			</ul>
-		</div>
-	</div>
-
-	<!-- Modal -->
-	<div id="sections" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-	
-	    	<!-- Modal content-->
-	    	<div class="modal-content">
-	      		<div class="modal-header">
-	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
-	        		<h4 class="modal-title">Sections</h4>
-	      		</div>
-	      		<div class="modal-body">
-	        		<div id="restaurant-graphics"></div>
-					<script src="http://cdnjs.cloudflare.com/ajax/libs/bonsai/0.4/bonsai.min.js"></script>
-					
-					<script>
-					  bonsai.run(document.getElementById("restaurant-graphics"), {
-					    url: "js/restaurant-graphics.js",
-					    width: 500,
-					    height: 400
-					  });
-					</script>
-	      		</div>
-		      	<div class="modal-footer">
-		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		      	</div>
-	   	 	</div>
 		</div>
 	</div>
 
@@ -91,8 +62,6 @@
 	   	 	</div>
 		</div>
 	</div>
-	
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#editProfile">Edit Profile</button>
 	
 	<div id="editProfile" class="modal fade" role="dialog">
 		<div class="modal-dialog">
@@ -227,6 +196,65 @@
 	      		</div>
 		      	<div class="modal-footer">
 		      		<button type="button" class="btn btn-primary" onclick="saveChanges()">Save</button>
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+	   	 	</div>
+		</div>
+	</div>
+	
+	<!-- Modal -->
+	<div id="placeOrder" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+	
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Place an Order</h4>
+	      		</div>
+	      		<div class="modal-body">
+	      			<label>Find:</label>
+	      			<input type="text" class="form-control" id="findProduct">
+	      			<br>
+	        		<label>Select a product:</label>
+	        		<div id="productsDiv">
+	        			<table class="table table-hover" id="productsList">
+		        			<thead>
+						    	<tr>
+						        	<th>Select</th>
+						        	<th>Name</th>
+						        	<th>Price</th>
+						        	<th>Amount</th>
+						    	</tr>
+					    	</thead>
+					    	<tbody>
+					    	</tbody> 
+						</table>
+	        		</div>
+	      		</div>
+		      	<div class="modal-footer">
+		      		<button type="button" class="btn btn-primary" onclick="placeOrder()">Order</button>
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      	</div>
+	   	 	</div>
+		</div>
+	</div>
+	
+	<!-- Modal -->
+	<div id="notificationModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+	
+	    	<!-- Modal content-->
+	    	<div class="modal-content">
+	      		<div class="modal-header">
+	        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        		<h4 class="modal-title">Notifications</h4>
+	      		</div>
+	      		<div class="modal-body">
+	        		<table id="notificationTable" class="table">
+					</table>
+	      		</div>
+		      	<div class="modal-footer">
 		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		      	</div>
 	   	 	</div>

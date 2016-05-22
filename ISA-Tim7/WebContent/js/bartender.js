@@ -1,5 +1,8 @@
 $( document ).ready(function() {
     
+
+	loadProducts();
+	
 	$("#showOrders").on('shown.bs.modal', function () {
 		loadOrders();
 	});
@@ -26,45 +29,48 @@ function loadOrders() {
 	   	url : "../ISA-Tim7/rest/order/getOpen",
 	   	type : "Post",
 	   	data : JSON.stringify({
-			"rest" : sessionStorage.restaurantId,
-			"employee" : "BARTENDER"
+			"rest" : sessionStorage.restaurantId
 		}),
 	   	contentType : 'application/json',
 		dataType : "json",
 	   	success : function(data) {
 	   		
-	   		list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+	   		var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
 	   		
 	   		if (list.length !=0) {
 	   			
-			   	$.each(list, function(index, obj) {	   		   		
-			   		$("#orders")
-			   	    .append($('<tr>')
-			   	        .append($('<td>')
-			   	            .append($('<p>')
-			   	                .text(obj.orderId)
-			   	            )
-			   	            .addClass("first")
-			   	        )
-			   	        .append($('<td>')
-			   	        	.append($('<p>')
-			   	        		.text(obj.name)
-			   	        	)
-			   	        	.addClass("second")
-			   	        )
-			   	        .append($('<td>')
-				   	        .append($('<button>')
-				   	        	.addClass("btn btn-primary")
-				   	        	.text("Take Order")
-				   	        	.click(function() {
-				   	        		console.log(obj.orderId);
-				   	        	})
-				   	        )
-				   	        .addClass("third")
-				   	    )
-				   	)
-
-		   		});
+			   	$.each(list, function(index, obj) {
+			   		$.each(lista, function(ind, ob) {
+			   			if(list[index].productId == lista[ind].id && lista[ind].type == "BEVERAGE") {
+			   				
+			   				$("#orders")
+					   	    .append($('<tr>')
+					   	        .append($('<td>')
+					   	            .append($('<p>')
+					   	                .text(obj.orderId)
+					   	            )
+					   	            .addClass("first")
+					   	        )
+					   	        .append($('<td>')
+					   	        	.append($('<p>')
+					   	        		.text(lista[ind].name)
+					   	        	)
+					   	        	.addClass("second")
+					   	        )
+					   	        .append($('<td>')
+						   	        .append($('<button>')
+						   	        	.addClass("btn btn-primary")
+						   	        	.text("Take Order")
+						   	        	.click(function() {
+						   	        		console.log(obj.id);
+						   	        	})
+						   	        )
+						   	        .addClass("third")
+						   	    )
+						   	)
+			   			}
+			   		});
+			   	});
 		   
 		   	}
 	   	},
@@ -156,4 +162,34 @@ function saveChanges() {
 	    }
 	});
 	   	
+}
+
+function loadProducts() {
+	
+	$.ajax ({
+	   	url : "../ISA-Tim7/rest/restaurant/getProducts",
+	   	type : "Post",
+	   	data : JSON.stringify({
+			"id_res" : sessionStorage.restaurantId
+		}),
+	   	contentType : 'application/json',
+		dataType : "json",
+	   	success : function(data) {
+	   		
+	   		var list = data == null ? [] : (data instanceof Array ? data : [ data ]);
+	   		lista = []
+	   		
+	   		if (list.length !=0) {
+	   			
+			   	$.each(list, function(index, obj) {	   		
+			   		lista[index] = obj;
+			   	});
+		   
+		   	}
+	   	},
+	    error : function(XMLHttpRequest, textStatus, errorThrown) {
+	    	alert("AJAX ERROR");
+	    }
+	    			
+	});
 }

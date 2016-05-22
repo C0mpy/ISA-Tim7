@@ -5,11 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
-
-import beans.City;
-import beans.Employee;
-import beans.Friend;
 import beans.Product;
 import beans.Restaurant;
 
@@ -412,6 +407,30 @@ public class RestaurantDAO {
 			e.printStackTrace();
 		}
 		
+	}
+			
+	public static ArrayList<Product> getProducts(String id_res) {
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection connect = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/timsedam?useSSL=false", "compy", "compara");
+			PreparedStatement ps = connect.prepareStatement("select * from PRODUCT where RESTAURANT_ID_RES=?");
+			ps.setString(1, id_res);
+			ResultSet result = ps.executeQuery();
+			ArrayList<Product> products = new ArrayList<Product>();
+			while(result.next()) {
+				products.add(new Product(result.getInt(1), result.getString(2), result.getDouble(3),
+						result.getString(4), id_res, result.getString(6)));
+			}
+			ps.close();
+			connect.close();
+			return products;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
 	}
 
 }

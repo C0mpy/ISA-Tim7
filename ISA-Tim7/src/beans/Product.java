@@ -2,25 +2,26 @@ package beans;
 
 public class Product {
 
-	int orderId;
+	int id;
 	String type;
 	double price;
 	String name;
-	int idRestaurant;
+	String idRestaurant;
 	String description;
 	
-	public Product(int id, String type, double price, String name, int idRestaurant) {
+	public Product(int id, String type, double price, String name, String idRestaurant, String desc) {
 		super();
-		this.orderId = id;
+		this.id = id;
 		this.type = type;
 		this.price = price;
 		this.name = name;
 		this.idRestaurant = idRestaurant;
+		this.description = desc;
 	}
 	
 	public Product(int id, String type, double price, String name, String description) {
 		
-		this.orderId = id;
+		this.id = id;
 		this.type = type;
 		this.price = price;
 		this.name = name;
@@ -36,12 +37,12 @@ public class Product {
 		this.description = description;
 	}
 
-	public int getOrderId() {
-		return orderId;
+	public int getId() {
+		return id;
 	}
 
-	public void setOrderId(int id) {
-		this.orderId = id;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getType() {
@@ -68,17 +69,17 @@ public class Product {
 		this.name = name;
 	}
 
-	public int getIdRestaurant() {
+	public String getIdRestaurant() {
 		return idRestaurant;
 	}
 
-	public void setIdRestaurant(int idRestaurant) {
+	public void setIdRestaurant(String idRestaurant) {
 		this.idRestaurant = idRestaurant;
 	}
 
 	@Override
 	public String toString() {
-		return "Product [orderId=" + orderId + ", type=" + type + ", price=" + price + ", name=" + name
+		return "Product [orderId=" + id + ", type=" + type + ", price=" + price + ", name=" + name
 				+ ", idRestaurant=" + idRestaurant + "]";
 	}
 	
